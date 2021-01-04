@@ -1,4 +1,4 @@
-import { qF, qFB } from '../../../../sanity-quick-fields'
+import { qF, qFB } from 'sanity-quick-fields'
 
 export default {
   ...qF('ingredient', 'document'),

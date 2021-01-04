@@ -1,5 +1,5 @@
 import { FiType, FiList, FiGrid } from 'react-icons/fi'
-import { qF, qFB } from '../../../../sanity-quick-fields'
+import { qF, qFB } from 'sanity-quick-fields'
 
 function toPlainText(blocks = []) {
   return blocks

@@ -1,5 +1,5 @@
 import React from 'react'
-import { qF } from '../../../../sanity-quick-fields'
+import { qF } from 'sanity-quick-fields'
 
 const TemperatureRender = ({ children, temperature, measurement }) => (
   <span style={{ backgroundColor: 'yellow' }}>
