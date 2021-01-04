@@ -8,6 +8,10 @@ function Heading({ className = '', children, as = 'h2' }) {
     return <h3 className={`${classes} text-sm ${className}`}>{children}</h3>
   }
 
+  if (as === 'h1') {
+    return <h1 className={`${classes} text-2xl ${className}`}>{children}</h1>
+  }
+
   return <h2 className={`${classes} text-xl ${className}`}>{children}</h2>
 }
 
