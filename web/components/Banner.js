@@ -4,12 +4,6 @@ import PropTypes from 'prop-types'
 function Banner({ children }) {
   return (
     <div className="banner py-12 md:py-24 flex flex-col items-center justify-center px-4 border-b border-caramel-200 overflow-hidden relative">
-      <img
-        style={{ objectPosition: 'bottom right' }}
-        className="absolute inset-0 w-1/2 left-auto object-cover object-right-bottom"
-        src="/millionaire-shortbread.jpg"
-        alt=""
-      />
       <div className="max-w-4xl relative">
         <div className="flex flex-col items-center justify-center relative">
           <div
