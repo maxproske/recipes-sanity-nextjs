@@ -1,13 +1,20 @@
-import React from 'react'
-import { PlusSmSolid, MinusSmSolid } from '@graywolfai/react-heroicons'
+import React, { useState, useEffect } from 'react'
+import { ChevronDownSolid } from '@graywolfai/react-heroicons'
 
 import { useStore } from '../../hooks/useStore'
 import Toggle from './Toggle'
 import Serves from './Serves'
+import useBreakpoint from '../../hooks/useBreakpoint'
 
 function Controls() {
-  const serves = useStore((state) => state.serves)
-  const incrementServes = useStore((state) => state.incrementServes)
+  const size = useBreakpoint()
+  const [showToggles, setShowToggles] = useState(false)
+  useEffect(() => {
+    if (size !== 'sm') {
+      setShowToggles(false)
+    }
+  }, [])
+
   const cup = useStore((state) => state.cup)
   const cupOptions = useStore((state) => state.cupOptions)
   const changeCup = useStore((state) => state.changeCup)
@@ -22,7 +29,31 @@ function Controls() {
     <div className="flex justify-center w-full bg-caramel-100 bg-opacity-90 border-b border-caramel-200 font-display text-2xs uppercase font-black tracking-widest sticky top-0 mb-8 py-1">
       <div className="flex items-center w-full max-w-4xl pl-2">
         <Serves />
-        <div className="ml-auto pr-2 flex divide-x divide-caramel-200">
+        <button
+          type="button"
+          onClick={() => setShowToggles(!showToggles)}
+          className={`flex md:hidden items-center uppercase text-2xs font-black tracking-widest ml-auto my-1 mr-2 py-2 px-2 leading-none transition-colors duration-100 
+            ${
+              showToggles
+                ? `text-caramel-900`
+                : `text-caramel-500 hover:bg-white hover:text-caramel-600`
+            }
+          `}
+        >
+          {showToggles ? `Hide` : `Show`} Controls
+          <ChevronDownSolid
+            className={`${
+              showToggles ? `rotate-180` : ``
+            } transform  w-4 h-auto`}
+          />
+        </button>
+        <div
+          className={`ml-auto px-2 ${
+            showToggles
+              ? ` bg-white z-10 absolute top-full -ml-2 w-full text-right border-t border-caramel-200`
+              : `hidden`
+          } md:flex divide-y md:divide-x md:divide-y-0 divide-caramel-200`}
+        >
           <Toggle
             name="cups"
             current={cup}

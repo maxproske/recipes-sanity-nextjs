@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 
 function Toggle({ name, options, current, changeFunction }) {
   return (
-    <div className="ml-auto flex px-1">
-      {options.map((option, index) => (
+    <div className="ml-auto flex justify-end px-1">
+      {options.map((option) => (
         <button
           key={
             typeof option === 'string'
@@ -15,7 +15,7 @@ function Toggle({ name, options, current, changeFunction }) {
           onClick={() =>
             changeFunction(typeof option === 'string' ? option : option.value)
           }
-          className={`uppercase text-2xs font-black tracking-widest my-1 py-2 px-2 leading-none transition-colors duration-100 
+          className={`uppercase text-2xs font-black tracking-widest my-1 py-4 md:py-2 px-2 leading-none transition-colors duration-100 
             ${
               option === current || option.value === current
                 ? `text-caramel-900`

@@ -14,9 +14,13 @@ export default function Home({ recipeList }) {
           <Heading as="h1">All Recipes</Heading>
         </div>
         {recipeList.map((recipe) => (
-          <article key={recipe._key} className="p-12">
+          <article key={recipe._id} className="p-12 relative">
             <Heading>{recipe.title}</Heading>
-            <Link href={recipe.slug.current}>View Recipe</Link>
+            <Link href={`/${recipe.slug.current}`}>
+              <a>
+                View Recipe <span className="absolute inset-0" />
+              </a>
+            </Link>
           </article>
         ))}
       </main>

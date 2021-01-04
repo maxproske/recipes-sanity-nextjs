@@ -30,6 +30,7 @@ module.exports = {
           900: '#26180d',
         },
       },
+      inset: { full: '100%' },
     },
   },
   variants: {

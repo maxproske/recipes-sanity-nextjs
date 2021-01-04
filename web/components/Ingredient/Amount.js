@@ -4,6 +4,7 @@ import { Portal } from 'react-portal'
 import { InformationCircleSolid } from '@graywolfai/react-heroicons'
 
 import { useStore } from '../../hooks/useStore'
+import IngredientModal from './IngredientModal'
 
 const convert = require('convert-units')
 
@@ -107,8 +108,8 @@ function Amount({ ingredient }) {
   }
 
   return (
-    <span className="flex group">
-      <span>
+    <span className="inline-flex group">
+      <span className="flex-1">
         <span className="font-mono text-xs text-caramel-700 whitespace-nowrap">
           {amountDisplay}
           {` `}
@@ -128,26 +129,18 @@ function Amount({ ingredient }) {
         </span>
       </span>
       <button
-        className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-100"
+        className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-100 pl-1"
         type="button"
-        onClick={() => setOpenModal(!openModal)}
+        onClick={() => setOpenModal(true)}
       >
         <InformationCircleSolid className="w-4 h-auto text-caramel-500" />
       </button>
       {openModal && (
         <Portal>
-          <div className="inset-0 fixed bg-caramel-900 bg-opacity-90 p-4 md:p-12 flex justify-center items-start">
-            <button
-              className="absolute w-full h-full inset-0"
-              type="button"
-              onClick={() => setOpenModal(false)}
-            >
-              <span className="sr-only">Close</span>
-            </button>
-            <div className="bg-white p-4 md:p-12 max-w-xl w-full relative">
-              This text is portaled at the end of document.body!
-            </div>
-          </div>
+          <IngredientModal
+            ingredient={ingredient.ingredient}
+            close={() => setOpenModal(false)}
+          />
         </Portal>
       )}
     </span>

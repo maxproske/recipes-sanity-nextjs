@@ -34,10 +34,10 @@ function Component({ step, count, allIngredients }) {
         <p className="py-2 border-b border-dashed border-caramel-300 mb-2 text-xs font-display font-black tracking-widest uppercase text-caramel-500 inline-block">
           {title}
         </p>
-        <ul className="space-y-2 pl-0 pr-4 mb-2 text-sm">
+        <ul className="space-y-2 pr-4 mb-2 text-sm">
           {componentIngredients.map((ingredient) => (
             <li key={ingredient._key}>
-              <span className="text-caramel-400 pr-1 text-lg leading-none">
+              <span className="hidden sm:inline text-caramel-400 pr-1 text-lg leading-none">
                 •
               </span>
               <Amount ingredient={ingredient} />
@@ -45,7 +45,7 @@ function Component({ step, count, allIngredients }) {
           ))}
         </ul>
       </div>
-      <div className="flex col-span-3 font-serif text-lg leading-relaxed">
+      <div className="md:flex col-span-3 font-serif text-lg leading-relaxed">
         <Count count={count} />
         <PortableText blocks={step.description} />
       </div>

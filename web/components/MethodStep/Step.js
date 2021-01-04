@@ -5,7 +5,7 @@ import Count from './Count'
 
 function Step({ step, count }) {
   return (
-    <div className="max-w-2xl mx-auto font-serif text-lg leading-relaxed flex">
+    <div className="max-w-2xl mx-auto font-serif text-lg leading-relaxed md:flex">
       <Count count={count} />
       <PortableText blocks={step.step} />
     </div>

@@ -29,9 +29,8 @@ function Serves() {
   return (
     <>
       {buttons.map((button, index) => (
-        <>
+        <React.Fragment key={button.increment}>
           <button
-            key={button.increment}
             type="button"
             onClick={() => incrementServes(button.increment)}
             className={button.classes}
@@ -44,7 +43,7 @@ function Serves() {
               {serves} {serves === 1 ? `Serve` : `Serves`}
             </div>
           )}
-        </>
+        </React.Fragment>
       ))}
     </>
   )
