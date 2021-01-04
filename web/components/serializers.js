@@ -1,11 +1,12 @@
-import EmbedHTML from './EmbedHTML'
-import Figure from './Figure'
+import Temperature from './Temperature'
 
 const serializers = {
-  types: {
-    embedHTML: EmbedHTML,
-    figure: Figure
-  }
+  marks: {
+    temperature: ({ mark }) => {
+      const { temperature, measurement } = mark
+      return <Temperature temperature={temperature} measurement={measurement} />
+    },
+  },
 }
 
 export default serializers

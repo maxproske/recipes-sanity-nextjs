@@ -21,4 +21,4 @@ export default {
       type: 'embedHTML',
     },
   ],
-};
+}

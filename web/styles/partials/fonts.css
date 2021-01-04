@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "Brandon Grotesque";
+  font-weight: theme("fontWeight.black");
+  font-display: swap;
+  src: url("/fonts/BrandonGrotesque-Black.woff2");
+}
+
+@font-face {
+  font-family: "Tisa";
+  font-weight: theme("fontWeight.thin");
+  font-display: swap;
+  src: url("/fonts/ff-tisa-web-pro-thin.woff2");
+}
+
+@font-face {
+  font-family: "Tisa";
+  font-weight: theme("fontWeight.normal");
+  font-display: swap;
+  src: url("/fonts/ff-tisa-web-pro-light.woff2");
+}
+
+@font-face {
+  font-family: "Domaine";
+  font-weight: theme("fontWeight.normal");
+  font-display: swap;
+  src: url("/fonts/DomaineTextWeb-Regular.woff2");
+}
+
+@font-face {
+  font-family: "Domaine";
+  font-weight: theme("fontWeight.normal");
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/DomaineTextWeb-RegularItalic.woff2");
+}

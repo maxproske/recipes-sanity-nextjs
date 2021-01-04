@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-const InternalLinkRender = ({ children }) => <span>{children} 🔗</span>;
+const InternalLinkRender = ({ children }) => <span>{children} 🔗</span>
 
 export default {
   title: 'Internal link to another document',
@@ -12,4 +12,4 @@ export default {
     icon: () => '🔗',
     render: InternalLinkRender,
   },
-};
+}

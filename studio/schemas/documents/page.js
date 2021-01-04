@@ -15,17 +15,6 @@ export default {
       title: 'Title',
     },
     {
-      name: 'content',
-      type: 'array',
-      title: 'Page sections',
-      of: [
-        { type: 'hero' },
-        { type: 'imageSection' },
-        { type: 'mailchimp' },
-        { type: 'textSection' },
-      ],
-    },
-    {
       name: 'description',
       type: 'text',
       title: 'Description',
@@ -47,4 +36,4 @@ export default {
       media: 'openGraphImage',
     },
   },
-};
+}
