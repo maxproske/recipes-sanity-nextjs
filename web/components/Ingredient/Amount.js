@@ -8,6 +8,12 @@ import IngredientModal from './IngredientModal'
 
 const convert = require('convert-units')
 
+function hasModalContent(ingredient) {
+  const { alternativeNames } = ingredient
+
+  return alternativeNames && alternativeNames.length > 0
+}
+
 function Amount({ ingredient }) {
   const [openModal, setOpenModal] = useState(false)
 
@@ -43,12 +49,12 @@ function Amount({ ingredient }) {
       if (cup === 'Volume') {
         if (weight === 'Metric') {
           measurementDisplay = 'mL'
-          amountBase = amount * 250 // 250mL per cup
+          amountBase = (amount * 250).toFixed() // 250mL per cup
         }
 
         if (weight === 'Imperial') {
           measurementDisplay = 'fl oz'
-          amountBase = amount * 8.32674 // fluid oz per cup
+          amountBase = (amount * 8.32674).toFixed() // fluid oz per cup
         }
       }
     }
@@ -56,13 +62,13 @@ function Amount({ ingredient }) {
     // Oz to Grams
     if (measurement === 'Oz' && weight === 'Metric') {
       measurementDisplay = 'Grams'
-      amountBase = convert(amount).from('oz').to('g')
+      amountBase = convert(amount).from('oz').to('g').toFixed()
     } else if (measurement === 'grams' && weight === 'Imperial') {
       measurementDisplay = 'Oz'
-      amountBase = convert(amount).from('g').to('oz')
+      amountBase = convert(amount).from('g').to('oz').toFixed()
     } else if (measurement === 'ml' && weight === 'Imperial') {
       measurementDisplay = 'fl oz'
-      amountBase = convert(amount).from('ml').to('fl-oz')
+      amountBase = convert(amount).from('ml').to('fl-oz').toFixed()
     }
 
     amountDisplay = amountBase * serves
@@ -108,7 +114,10 @@ function Amount({ ingredient }) {
   }
 
   return (
-    <span className="inline-flex group">
+    <span className="w-full inline-flex group relative py-1">
+      <span className="hidden sm:inline text-caramel-400 pr-1 text-lg leading-none">
+        •
+      </span>
       <span className="flex-1">
         <span className="font-mono text-xs text-caramel-700 whitespace-nowrap">
           {amountDisplay}
@@ -116,7 +125,7 @@ function Amount({ ingredient }) {
           {measurementDisplay}
           {` `}
         </span>
-        <span className="text-sm font-serif text-caramel-900">
+        <span className="text-sm font-serif text-caramel-900 group-hover:text-caramel-700">
           {note ? (
             <>
               {ingredient.ingredient.title}
@@ -128,20 +137,25 @@ function Amount({ ingredient }) {
           )}
         </span>
       </span>
-      <button
-        className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-100 pl-1"
-        type="button"
-        onClick={() => setOpenModal(true)}
-      >
-        <InformationCircleSolid className="w-4 h-auto text-caramel-500" />
-      </button>
-      {openModal && (
-        <Portal>
-          <IngredientModal
-            ingredient={ingredient.ingredient}
-            close={() => setOpenModal(false)}
-          />
-        </Portal>
+      {hasModalContent(ingredient.ingredient) && (
+        <>
+          <button
+            className="ml-auto opacity-10 group-hover:opacity-100 transition-opacity duration-100 pl-2"
+            type="button"
+            onClick={() => setOpenModal(true)}
+          >
+            <span className="absolute inset-0" />
+            <InformationCircleSolid className="w-4 h-auto text-caramel-500" />
+          </button>
+          {openModal && (
+            <Portal>
+              <IngredientModal
+                ingredient={ingredient.ingredient}
+                close={() => setOpenModal(false)}
+              />
+            </Portal>
+          )}
+        </>
       )}
     </span>
   )

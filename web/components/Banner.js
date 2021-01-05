@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 function Banner({ children }) {
   return (
-    <div className="banner py-12 md:py-24 flex flex-col items-center justify-center px-4 border-b border-caramel-200 overflow-hidden relative">
+    <div className="banner pt-12 px-4 py-4 md:px-4 md:py-24 flex flex-col items-center justify-center border-b border-caramel-200 overflow-hidden relative">
       <div className="max-w-4xl relative">
         <div className="flex flex-col items-center justify-center relative">
           <div
@@ -14,7 +14,7 @@ function Banner({ children }) {
             {children}
           </h1>
         </div>
-        <div className="bg-white pb-6 md:pb-12 px-12 flex flex-col items-center justify-center relative">
+        <div className="bg-white pb-6 md:pb-12 px-6 md:px-12 flex flex-col items-center justify-center relative">
           <div className="my-6 md:my-12 flex items-center">
             <div className="w-6 md:w-12 border-t-2 border-caramel-200" />
             <div className="px-3 font-display uppercase tracking-widest text-xs leading-none text-caramel-500">
