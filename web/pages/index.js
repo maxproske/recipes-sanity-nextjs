@@ -10,26 +10,32 @@ export default function Home({ recipeList }) {
   return (
     <Layout>
       <main className="min-h-screen">
-        <div className="p-12 border-b border-caramel-200">
+        <div className="p-12 text-center">
           <Heading as="h1">All Recipes</Heading>
         </div>
-        {recipeList.map((recipe) => (
-          <article key={recipe._id} className="p-12 relative">
-            <Heading>{recipe.title}</Heading>
-            <Link href={`/${recipe.slug.current}`}>
-              <a>
-                View Recipe <span className="absolute inset-0" />
-              </a>
-            </Link>
-          </article>
-        ))}
+        <div className="w-full max-w-4xl mx-auto md:grid md:grid-cols-3">
+          {recipeList.map((recipe) => (
+            <article
+              key={recipe._id}
+              className="p-12 relative bg-white text-center"
+            >
+              <div className="absolute inset-0 m-2 md:m-4 border border-caramel-200" />
+              <Heading>{recipe.title}</Heading>
+              <Link href={`/${recipe.slug.current}`}>
+                <a className="label">
+                  View Recipe <span className="absolute inset-0" />
+                </a>
+              </Link>
+            </article>
+          ))}
+        </div>
       </main>
     </Layout>
   )
 }
 
 Home.propTypes = {
-  recipeList: PropTypes.object,
+  recipeList: PropTypes.array,
 }
 
 export async function getStaticProps({ params }) {

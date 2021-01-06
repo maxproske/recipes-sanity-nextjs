@@ -1,0 +1,3 @@
+.label {
+  @apply uppercase font-display font-black text-2xs tracking-mega;
+}

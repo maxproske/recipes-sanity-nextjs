@@ -15,12 +15,13 @@ function Banner({ children }) {
           </h1>
         </div>
         <div className="bg-white pb-6 md:pb-12 px-6 md:px-12 flex flex-col items-center justify-center relative">
+          <div className="absolute inset-0 border border-caramel-300 m-2 md:m-4" />
           <div className="my-6 md:my-12 flex items-center">
-            <div className="w-6 md:w-12 border-t-2 border-caramel-200" />
+            <div className="w-6 md:w-12 border-t border-caramel-300" />
             <div className="px-3 font-display uppercase tracking-widest text-xs leading-none text-caramel-500">
               Desserts
             </div>
-            <div className="w-6 md:w-12 border-t-2 border-caramel-200" />
+            <div className="w-6 md:w-12 border-t border-caramel-300" />
           </div>
           <div className="md:text-lg md:leading-relaxed font-serif italic text-caramel-800 max-w-xl text-center">
             A slightly over-the-top name for what Australians simply refer to as

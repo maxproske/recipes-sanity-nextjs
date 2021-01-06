@@ -1,4 +1,5 @@
 import React from 'react'
+import GlobalHeader from '../components/GlobalHeader'
 
 import '../styles/app.css'
 // import Grid from '../src/components/Grid'
@@ -9,6 +10,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <section className="font-sans bg-caramel-100">
+        <GlobalHeader />
         <Component {...pageProps} />
       </section>
       {/* {process.env.NODE_ENV !== 'production' && <Grid />} */}
