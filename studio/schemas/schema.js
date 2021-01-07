@@ -22,6 +22,7 @@ import simplePortableText from './objects/simplePortableText'
 
 // Custom Object
 import ingredientPicker from './objects/ingredientPicker'
+import ingredientAmount from './objects/ingredientAmount'
 import temperature from './objects/temperature'
 
 // Then we give our schema to the builder and provide the result to Sanity
@@ -44,5 +45,6 @@ export default createSchema({
     simplePortableText,
     siteConfig,
     ingredientPicker,
+    ingredientAmount,
   ]),
 })

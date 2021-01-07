@@ -1,4 +1,4 @@
-import { FiType, FiList, FiGrid } from 'react-icons/fi'
+import { FiType, FiList, FiGrid, FiBox, FiDroplet } from 'react-icons/fi'
 import { qF, qFB } from 'sanity-quick-fields'
 
 function toPlainText(blocks = []) {
@@ -16,10 +16,11 @@ export default {
   ...qF('recipe', 'document'),
   fields: [
     qF('title'),
+    qF('description', 'text', { rows: 3 }),
     qF('slug', 'slug', { source: 'title' }),
     qF('published', 'date'),
     qFB('ingredients', 'array').children([
-      qFB('set', 'object').children([
+      qFB('set', 'object', { icon: FiBox }).children([
         qF('title'),
         qFB('ingredients', 'array').children([
           {
@@ -27,34 +28,25 @@ export default {
             title: 'Ingredient',
             type: 'object',
             fields: [
-              qF('amount', 'number'),
-              qF('measurement', 'string', {
-                list: [
-                  { title: 'mL', value: 'ml' },
-                  { title: 'Cup', value: 'cup' },
-                  { title: 'Tsp', value: 'tsp' },
-                  { title: 'Tbsp', value: 'tbsp' },
-                  { title: 'Gram', value: 'gram' },
-                  { title: 'Oz', value: 'oz' },
-                  { title: 'Sprinkle', value: 'sprinkle' },
-                  { title: 'Pinch', value: 'pinch' },
-                ],
-              }),
+              qF('amount', 'ingredientAmount'),
               qF('ingredient', 'reference', { to: { type: 'ingredient' } }),
               qF('note'),
             ],
+            icon: FiDroplet,
             preview: {
               select: {
                 ingredient: 'ingredient.title',
-                amount: 'amount',
-                measurement: 'measurement',
+                amount: 'amount.value',
+                unit: 'amount.unit',
                 note: 'note',
               },
               prepare(selection) {
-                const { ingredient, amount, measurement, note } = selection
+                const { ingredient, amount, unit, note } = selection
                 return {
-                  title: note ? `${ingredient}, ${note}` : ingredient,
-                  subtitle: [amount, measurement].join(' ').trim(),
+                  title: ingredient,
+                  subtitle: [amount, unit, note ? `– ${note}` : '']
+                    .join(' ')
+                    .trim(),
                 }
               },
             },

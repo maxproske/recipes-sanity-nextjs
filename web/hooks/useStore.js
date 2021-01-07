@@ -1,7 +1,7 @@
 import create from 'zustand'
 
 const cupOptions = ['Cups', 'Weight', 'Volume']
-const weightOptions = ['Metric', 'Imperial']
+const standardOptions = ['Metric', 'Imperial']
 const temperatureOptions = [
   { value: 'celsius', abbr: 'ºC' },
   { value: 'fahrenheit', abbr: 'ºF' },
@@ -19,9 +19,9 @@ export const useStore = create((set) => ({
   changeCup: (cup) => set(() => ({ cup })),
 
   // Weights
-  weight: weightOptions[0],
-  weightOptions,
-  changeWeight: (weight) => set(() => ({ weight })),
+  standard: standardOptions[0],
+  standardOptions,
+  changeStandard: (standard) => set(() => ({ standard })),
 
   // Temperatures
   temperature: temperatureOptions[0].value,

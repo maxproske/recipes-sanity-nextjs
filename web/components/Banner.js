@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-function Banner({ children }) {
+function Banner({ children, description }) {
   return (
     <div className="banner pt-12 px-4 py-4 md:px-4 md:py-24 flex flex-col items-center justify-center border-b border-caramel-200 overflow-hidden relative">
       <div className="max-w-4xl relative">
@@ -23,11 +23,11 @@ function Banner({ children }) {
             </div>
             <div className="w-6 md:w-12 border-t border-caramel-300" />
           </div>
-          <div className="md:text-lg md:leading-relaxed font-serif italic text-caramel-800 max-w-xl text-center">
-            A slightly over-the-top name for what Australians simply refer to as
-            "Caramel Slice". Not too complicated to make, but requires a little
-            time to let each stage set before applying the next.
-          </div>
+          {description && (
+            <div className="md:text-lg md:leading-relaxed font-serif italic text-caramel-800 max-w-xl text-center">
+              {description}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -36,6 +36,7 @@ function Banner({ children }) {
 
 Banner.propTypes = {
   children: PropTypes.node,
+  description: PropTypes.string,
 }
 
 export default Banner

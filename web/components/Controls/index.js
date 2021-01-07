@@ -18,9 +18,9 @@ function Controls() {
   const cup = useStore((state) => state.cup)
   const cupOptions = useStore((state) => state.cupOptions)
   const changeCup = useStore((state) => state.changeCup)
-  const weight = useStore((state) => state.weight)
-  const weightOptions = useStore((state) => state.weightOptions)
-  const changeWeight = useStore((state) => state.changeWeight)
+  const standard = useStore((state) => state.standard)
+  const standardOptions = useStore((state) => state.standardOptions)
+  const changeStandard = useStore((state) => state.changeStandard)
   const temperature = useStore((state) => state.temperature)
   const temperatureOptions = useStore((state) => state.temperatureOptions)
   const changeTemperature = useStore((state) => state.changeTemperature)
@@ -61,10 +61,10 @@ function Controls() {
             changeFunction={changeCup}
           />
           <Toggle
-            name="weight"
-            current={weight}
-            options={weightOptions}
-            changeFunction={changeWeight}
+            name="standard"
+            current={standard}
+            options={standardOptions}
+            changeFunction={changeStandard}
           />
           <Toggle
             name="temperature"

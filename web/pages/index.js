@@ -13,7 +13,7 @@ export default function Home({ recipeList }) {
         <div className="p-12 text-center">
           <Heading as="h1">All Recipes</Heading>
         </div>
-        <div className="w-full max-w-4xl mx-auto md:grid md:grid-cols-3">
+        <div className="w-full max-w-4xl mx-auto divide-x-4 md:divide-x-0 md:grid md:grid-cols-3 md:gap-4 px-4">
           {recipeList.map((recipe) => (
             <article
               key={recipe._id}

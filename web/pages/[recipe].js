@@ -9,12 +9,12 @@ import Banner from '../components/Banner'
 import Controls from '../components/Controls/index'
 
 export default function Recipe({ recipe }) {
-  const { title, ingredients, method } = recipe
+  const { title, description, ingredients, method } = recipe
 
   return (
     <Layout>
       <main>
-        <Banner>{title}</Banner>
+        <Banner description={description}>{title}</Banner>
         <Controls />
         <section className="max-w-4xl mx-auto p-4">
           <Ingredients ingredients={ingredients} />

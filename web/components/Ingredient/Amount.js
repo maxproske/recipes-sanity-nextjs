@@ -5,8 +5,7 @@ import { InformationCircleSolid } from '@graywolfai/react-heroicons'
 
 import { useStore } from '../../hooks/useStore'
 import IngredientModal from './IngredientModal'
-
-const convert = require('convert-units')
+import { convertCups } from './amountHelpers'
 
 function hasModalContent(ingredient) {
   const { alternativeNames } = ingredient
@@ -17,100 +16,90 @@ function hasModalContent(ingredient) {
 function Amount({ ingredient }) {
   const [openModal, setOpenModal] = useState(false)
 
-  const { amount, note, measurement } = ingredient
+  const { amount, note } = ingredient
+  const { unit, amounts } = amount
   const { cupInGrams } = ingredient.ingredient
 
   const cup = useStore((state) => state.cup)
   const serves = useStore((state) => state.serves)
-  const weight = useStore((state) => state.weight)
+  const standard = useStore((state) => state.standard)
 
-  let amountDisplay
-  let measurementDisplay = measurement
+  // Get all amounts and update values for serves
+  const displayAmounts = amounts.map((item) => ({
+    ...item,
+    value: item.value * serves,
+  }))
 
-  if (amount && typeof amount === 'number') {
-    let amountBase = amount
+  let displayAmount = {}
+
+  // Show converted amounts depending on state
+  if (
+    standard !== 'Traditional' &&
+    unit !== 'cup' &&
+    displayAmounts.length > 0
+  ) {
+    displayAmount = displayAmounts.filter(
+      (amountsItem) => amountsItem.standard && amountsItem.standard === standard
+    )[0]
+  } else if (displayAmounts.length > 0) {
+    // "Traditional" should just use first amount?
+    displayAmount = displayAmounts[0]
 
     // Cups to something else
-    if (measurementDisplay === 'Cup' && cup !== 'Cups' && cupInGrams) {
-      if (cup === 'Weight') {
-        if (weight === 'Metric') {
-          measurementDisplay = 'Grams'
-          amountBase = cupInGrams * amount
-        }
+  } else {
+    // Fallback to initial value
+    displayAmount = { ...amount }
+  }
 
-        if (weight === 'Imperial') {
-          measurementDisplay = 'Oz'
-          amountBase = convert(cupInGrams * amount)
-            .from('g')
-            .to('oz')
-        }
+  // Modify 'cups'
+  if (unit === 'cup' && cup !== 'Cups' && cupInGrams) {
+    displayAmount = {
+      ...displayAmount,
+      ...convertCups(displayAmount.value, cupInGrams, cup, standard),
+    }
+  }
+
+  // Does the amount have decimals?
+  if (
+    displayAmount &&
+    displayAmount.standard === 'Traditional' &&
+    displayAmount.value % 1 > 0
+  ) {
+    displayAmount.value = displayAmount.value.toFixed(2)
+
+    if (cup === 'Cups' || (cup !== 'Cups' && unit !== 'Cup')) {
+      const amountEnd = displayAmount.value.split('.').pop()
+
+      switch (amountEnd) {
+        case '25':
+          displayAmount.value = displayAmount.value.replace('.25', `¼`)
+          break
+        case '33':
+          displayAmount.value = displayAmount.value.replace('.33', `⅓`)
+          break
+        case '50':
+          displayAmount.value = displayAmount.value.replace('.50', `½`)
+          break
+        case '66':
+          displayAmount.value = displayAmount.value.replace('.66', `⅔`)
+          break
+        case '75':
+          displayAmount.value = displayAmount.value.replace('.75', `¾`)
+          break
+        default:
+          break
       }
 
-      if (cup === 'Volume') {
-        if (weight === 'Metric') {
-          measurementDisplay = 'mL'
-          amountBase = (amount * 250).toFixed() // 250mL per cup
-        }
-
-        if (weight === 'Imperial') {
-          measurementDisplay = 'fl oz'
-          amountBase = (amount * 8.32674).toFixed() // fluid oz per cup
-        }
-      }
-    }
-
-    // Oz to Grams
-    if (measurement === 'Oz' && weight === 'Metric') {
-      measurementDisplay = 'Grams'
-      amountBase = convert(amount).from('oz').to('g').toFixed()
-    } else if (measurement === 'grams' && weight === 'Imperial') {
-      measurementDisplay = 'Oz'
-      amountBase = convert(amount).from('g').to('oz').toFixed()
-    } else if (measurement === 'ml' && weight === 'Imperial') {
-      measurementDisplay = 'fl oz'
-      amountBase = convert(amount).from('ml').to('fl-oz').toFixed()
-    }
-
-    amountDisplay = amountBase * serves
-
-    // Does the amount have decimals?
-    if (amountDisplay % 1 > 0) {
-      amountDisplay = amountDisplay.toFixed(2)
-
-      if (cup === 'Cups' || (cup !== 'Cups' && measurement !== 'Cup')) {
-        const amountEnd = amountDisplay.split('.').pop()
-
-        switch (amountEnd) {
-          case '25':
-            amountDisplay = amountDisplay.replace('.25', `¼`)
-            break
-          case '33':
-            amountDisplay = amountDisplay.replace('.33', `⅓`)
-            break
-          case '50':
-            amountDisplay = amountDisplay.replace('.50', `½`)
-            break
-          case '66':
-            amountDisplay = amountDisplay.replace('.66', `⅔`)
-            break
-          case '75':
-            amountDisplay = amountDisplay.replace('.75', `¾`)
-            break
-          default:
-            break
-        }
-
-        // Get rid of any leading zero
-        if (amountDisplay[0] === '0') {
-          amountDisplay = amountDisplay.slice(1)
-        }
+      // Get rid of any leading zero
+      if (displayAmount.value[0] === '0') {
+        displayAmount.value = displayAmount.value.slice(1)
       }
     }
   }
 
-  // Check for plurals, this should be more optimised
-  if (amountDisplay > 1 && measurementDisplay === 'Cup') {
-    measurementDisplay = 'Cups'
+  // Clean up
+  if (displayAmount && displayAmount.unitTitle === 'Quantity') {
+    displayAmount.unitTitle = ''
   }
 
   return (
@@ -119,12 +108,16 @@ function Amount({ ingredient }) {
         •
       </span>
       <span className="flex-1">
-        <span className="font-mono text-xs text-caramel-700 whitespace-nowrap">
-          {amountDisplay}
-          {` `}
-          {measurementDisplay}
-          {` `}
-        </span>
+        {displayAmount && (
+          <span className="font-mono text-xs text-caramel-700 whitespace-nowrap">
+            {displayAmount.value}
+            {` `}
+            {displayAmount.value > 1 && displayAmount.unitTitlePlural
+              ? displayAmount.unitTitlePlural
+              : displayAmount.unitTitle}
+            {` `}
+          </span>
+        )}
         <span className="text-sm font-serif text-caramel-900 group-hover:text-caramel-700">
           {note ? (
             <>
@@ -162,7 +155,18 @@ function Amount({ ingredient }) {
 }
 
 Amount.propTypes = {
-  ingredient: PropTypes.object,
+  ingredient: PropTypes.shape({
+    amount: PropTypes.shape({
+      amounts: PropTypes.array,
+      type: PropTypes.string,
+      unit: PropTypes.string,
+    }),
+    ingredient: PropTypes.shape({
+      cupInGrams: PropTypes.number,
+      title: PropTypes.string,
+    }),
+    note: PropTypes.string,
+  }),
 }
 
 export default Amount

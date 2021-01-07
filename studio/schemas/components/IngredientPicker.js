@@ -17,6 +17,7 @@ const createPatchFrom = (value) =>
 
 const IngredientPicker = React.forwardRef((props, ref) => {
   const { type, value, document, onChange } = props
+  console.log(props)
 
   // Split value into array for checking
   const [valueParsed, setValueParsed] = useState(value ? JSON.parse(value) : {})
