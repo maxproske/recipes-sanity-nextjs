@@ -7,7 +7,7 @@ import FormField from 'part:@sanity/components/formfields/default'
 import PatchEvent, { set, unset } from 'part:@sanity/form-builder/patch-event'
 
 import { TextInput, Stack, Flex, Radio, Label, Select } from '@sanity/ui'
-import { getUnitDetails, options, units } from './amountSettings'
+import { getUnitDetails, options, units, unitDropdown } from './amountSettings'
 
 // Import the TextInput from UI
 import convertedAmounts from './convertedAmounts'
@@ -29,13 +29,13 @@ const IngredientAmount = React.forwardRef((props, ref) => {
 
   // Local state
   const [localValue, setLocalValue] = useState(
-    props.value ? { ...props.value } : {}
+    props.value ? { ...props.value } : { unit: 'cup' }
   )
 
   // Handle value + unit changes
   // Update local state and create Patch event
-  const handleChange = (newValue, newStandardAndUnit) => {
-    let updatedValue = { ...localValue }
+  const handleChange = (newValue, newUnit) => {
+    const updatedValue = { ...localValue }
 
     // Update value
     if (newValue === '') {
@@ -47,23 +47,15 @@ const IngredientAmount = React.forwardRef((props, ref) => {
     }
 
     // Update units
-    const unitsString =
-      newStandardAndUnit && newStandardAndUnit.includes('.')
-        ? newStandardAndUnit
-        : unitsRef.current.value
-    const [newStandard, newType] = unitsString.split('.')
-
-    updatedValue.standard = newStandard
-    updatedValue.unit = newType
+    if (newUnit) {
+      updatedValue.unit = newUnit
+    }
 
     // Use our updated values and current settings...
-    const { value, unit, standard } = updatedValue
-
-    // Add details about unit
-    updatedValue = { ...updatedValue, ...getUnitDetails(newStandard, unit) }
+    const { value, unit } = updatedValue
 
     // ...to create converted amounts
-    updatedValue.amounts = !value ? [] : convertedAmounts(value, unit, standard)
+    updatedValue.amounts = !value ? [] : convertedAmounts(value, unit)
 
     setLocalValue(updatedValue)
     onChange(createPatchFrom(updatedValue))
@@ -78,16 +70,10 @@ const IngredientAmount = React.forwardRef((props, ref) => {
 
   // When Radio buttons are used
   const changeSetting = (key, newSetting) => {
-    // Update 'settings'
     const currentSettings = { ...settings, [key]: newSetting }
 
     setSettings(currentSettings)
   }
-
-  // Called by the Sanity form-builder when this input should receive focus
-  //   focus = () => {
-  //     valueRef.current.focus()
-  //   }
 
   return (
     <FormField label={type.title} description={type.description}>
@@ -111,17 +97,15 @@ const IngredientAmount = React.forwardRef((props, ref) => {
           }}
           ref={unitsRef}
           onChange={(event) => handleChange(undefined, event.target.value)}
+          value={localValue.unit}
         >
-          {Object.keys(units).map((unitKey) => (
+          {Object.keys(unitDropdown()).map((unitKey) => (
             <optgroup key={`option-${unitKey}`} label={unitKey}>
-              {units[unitKey].map((option) => (
-                <option
-                  key={`${unitKey}.${option.value}`}
-                  value={`${unitKey}.${option.value}`}
-                >
-                  {option.titlePlural && localValue.value !== 1
-                    ? option.titlePlural
-                    : option.title}
+              {unitDropdown()[unitKey].map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.plural && localValue.value > 1
+                    ? option.plural
+                    : option.single}
                 </option>
               ))}
             </optgroup>
@@ -187,9 +171,11 @@ const IngredientAmount = React.forwardRef((props, ref) => {
                 style={{ paddingRight: `1rem` }}
               >
                 {item.value}{' '}
-                {item.unitTitlePlural && item.value !== 1
-                  ? item.unitTitlePlural
-                  : item.unitTitle}
+                {units[item.unit]
+                  ? units[item.unit].plural && item.value > 1
+                    ? units[item.unit].plural
+                    : units[item.unit].single
+                  : `No label`}
               </div>
             ))}
           </Flex>

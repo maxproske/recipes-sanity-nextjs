@@ -9,7 +9,7 @@ import Banner from '../components/Banner'
 import Controls from '../components/Controls/index'
 
 export default function Recipe({ recipe }) {
-  const { title, description, ingredients, method } = recipe
+  const { title, description, ingredientSets, method } = recipe
 
   return (
     <Layout>
@@ -17,8 +17,8 @@ export default function Recipe({ recipe }) {
         <Banner description={description}>{title}</Banner>
         <Controls />
         <section className="max-w-4xl mx-auto p-4">
-          <Ingredients ingredients={ingredients} />
-          <Method ingredients={ingredients} method={method} />
+          <Ingredients ingredientSets={ingredientSets} />
+          <Method ingredientSets={ingredientSets} method={method} />
         </section>
       </main>
     </Layout>
@@ -48,7 +48,7 @@ export async function getStaticProps({ params }) {
   const recipeQuery = groq`
   *[_type == "recipe" && slug.current == "${params.recipe}"][0]{
     ...,
-    ingredients[] {
+    ingredientSets[] {
       ...,
       ingredients[] {
         ...,

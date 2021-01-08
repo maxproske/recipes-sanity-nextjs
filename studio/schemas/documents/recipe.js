@@ -1,5 +1,6 @@
 import { FiType, FiList, FiGrid, FiBox, FiDroplet } from 'react-icons/fi'
 import { qF, qFB } from 'sanity-quick-fields'
+import { units } from '../components/amountSettings'
 
 function toPlainText(blocks = []) {
   return blocks
@@ -16,10 +17,11 @@ export default {
   ...qF('recipe', 'document'),
   fields: [
     qF('title'),
+    qF('amount', 'ingredientAmount'),
     qF('description', 'text', { rows: 3 }),
     qF('slug', 'slug', { source: 'title' }),
     qF('published', 'date'),
-    qFB('ingredients', 'array').children([
+    qFB('ingredientSets', 'array').children([
       qFB('set', 'object', { icon: FiBox }).children([
         qF('title'),
         qFB('ingredients', 'array').children([
@@ -42,9 +44,15 @@ export default {
               },
               prepare(selection) {
                 const { ingredient, amount, unit, note } = selection
+
+                const unitLabel =
+                  amount > 1 && units[unit].plural
+                    ? units[unit].plural
+                    : units[unit].single
+
                 return {
                   title: ingredient,
-                  subtitle: [amount, unit, note ? `– ${note}` : '']
+                  subtitle: [amount, unitLabel, note ? `– ${note}` : '']
                     .join(' ')
                     .trim(),
                 }

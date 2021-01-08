@@ -6,24 +6,48 @@ export const options = [
 ]
 
 export const units = {
-  Traditional: [
-    { title: 'Cup', titlePlural: 'Cups', value: 'cup', type: 'Volume' },
-    { title: 'Tsp', value: 'tsp', type: 'Volume' },
-    { title: 'Tbsp', value: 'tbsp', type: 'Volume' },
-  ],
-  Metric: [
-    { title: 'Gram', titlePlural: 'Grams', value: 'g', type: 'Weight' },
-    { title: 'mL', value: 'ml', type: 'Volume' },
-  ],
-  Imperial: [
-    { title: 'Oz', value: 'oz', type: 'Weight' },
-    { title: 'Fl Oz', value: 'fl-oz', type: 'Volume' },
-  ],
-  Fuzzy: [
-    { title: 'Quantity', value: 'quantity' },
-    { title: 'Pinch', value: 'pinch' },
-    { title: 'Sprinkle', value: 'sprinkle' },
-  ],
+  cup: {
+    single: 'Cup',
+    plural: 'Cups',
+    type: 'Volume',
+    standard: 'Traditional',
+  },
+  tsp: { single: 'Tsp', type: 'Volume', standard: 'Traditional' },
+  tbsp: { single: 'Tbsp', type: 'Volume', standard: 'Traditional' },
+  g: {
+    single: 'Gram',
+    plural: 'Grams',
+    type: 'Weight',
+    standard: 'Metric',
+  },
+  ml: { single: 'mL', type: 'Volume', standard: 'Metric' },
+  oz: { single: 'Oz', type: 'Weight', standard: 'Imperial' },
+  'fl-oz': { single: 'Fl Oz', type: 'Volume', standard: 'Imperial' },
+  quantity: { single: 'Quantity', standard: 'Fuzzy' },
+  pinch: { single: 'Pinch', plural: 'Pinches', standard: 'Fuzzy' },
+  sprinkle: {
+    single: 'Sprinkle',
+    plural: 'Sprinkles',
+    standard: 'Fuzzy',
+  },
+}
+
+// Reshape Units Object to create dropdown menu
+export const unitDropdown = () => {
+  const dropdown = {}
+
+  Object.keys(units).forEach((unitKey) => {
+    if (!dropdown[units[unitKey].standard]) {
+      dropdown[units[unitKey].standard] = []
+    }
+
+    dropdown[units[unitKey].standard].push({
+      value: unitKey,
+      ...units[unitKey],
+    })
+  })
+
+  return dropdown
 }
 
 export function getUnitDetails(Standard, unitValue) {
@@ -33,8 +57,6 @@ export function getUnitDetails(Standard, unitValue) {
 
   if (unit && unit.length > 0) {
     return {
-      unitTitle: unit[0].title,
-      unitTitlePlural: unit[0].titlePlural || '',
       type: unit[0].type,
     }
   }

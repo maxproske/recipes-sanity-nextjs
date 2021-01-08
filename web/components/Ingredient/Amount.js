@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 import { Portal } from 'react-portal'
 import { InformationCircleSolid } from '@graywolfai/react-heroicons'
 
+import { units } from '../../../studio/schemas/components/amountSettings'
 import { useStore } from '../../hooks/useStore'
 import IngredientModal from './IngredientModal'
-import { convertCups } from './amountHelpers'
+import { convertCups, filterAmounts, valueFraction } from './amountHelpers'
 
 function hasModalContent(ingredient) {
   const { alternativeNames } = ingredient
@@ -24,39 +25,75 @@ function Amount({ ingredient }) {
   const serves = useStore((state) => state.serves)
   const standard = useStore((state) => state.standard)
 
+  //
+  const amountBase = {
+    ...amount,
+    ...units[amount.unit],
+  }
+
   // Get all amounts and update values for serves
   const displayAmounts = amounts.map((item) => ({
-    ...item,
-    value: item.value * serves,
+    ...item, // Item base
+    value: item.value * serves, // Update value client-side for serves
+    ...units[item.unit], // Get unit title/plural
   }))
 
   let displayAmount = {}
 
-  // Show converted amounts depending on state
-  if (
-    standard !== 'Traditional' &&
-    unit !== 'cup' &&
-    displayAmounts.length > 0
-  ) {
-    displayAmount = displayAmounts.filter(
-      (amountsItem) => amountsItem.standard && amountsItem.standard === standard
-    )[0]
-  } else if (displayAmounts.length > 0) {
-    // "Traditional" should just use first amount?
-    displayAmount = displayAmounts[0]
+  if (displayAmounts.length > 0) {
+    // Show converted amounts depending on state
+    if (
+      amountBase.standard === 'Imperial' ||
+      amountBase.standard === 'Metric'
+    ) {
+      displayAmount = filterAmounts(displayAmounts, { standard })
+    } else if (
+      amountBase.standard === 'Traditional' &&
+      amountBase.unit === 'cup'
+    ) {
+      switch (cup) {
+        case 'Cups':
+          displayAmount = filterAmounts(displayAmounts, { unit: 'cup' })
+          break
 
-    // Cups to something else
+        case 'Volume':
+        case 'Weight':
+          displayAmount = filterAmounts(displayAmounts, { standard, type: cup })
+
+          // Only volume unit details come along, we need to add weight unit details
+          if (cup === 'Weight') {
+            displayAmount = {
+              ...displayAmount,
+              ...units[standard === 'Imperial' ? 'oz' : 'g'],
+            }
+          }
+
+          // Dynamically create weight / volume
+          if (cupInGrams) {
+            displayAmount = {
+              ...displayAmount,
+              ...convertCups(
+                amountBase.value * serves,
+                cupInGrams,
+                cup,
+                standard
+              ),
+            }
+          }
+          break
+
+        default:
+          displayAmount = filterAmounts(displayAmounts, { unit: 'cup' })
+
+          break
+      }
+    } else {
+      const [displayAmountsFirst] = displayAmounts
+      displayAmount = displayAmountsFirst
+    }
   } else {
     // Fallback to initial value
     displayAmount = { ...amount }
-  }
-
-  // Modify 'cups'
-  if (unit === 'cup' && cup !== 'Cups' && cupInGrams) {
-    displayAmount = {
-      ...displayAmount,
-      ...convertCups(displayAmount.value, cupInGrams, cup, standard),
-    }
   }
 
   // Does the amount have decimals?
@@ -65,41 +102,14 @@ function Amount({ ingredient }) {
     displayAmount.standard === 'Traditional' &&
     displayAmount.value % 1 > 0
   ) {
-    displayAmount.value = displayAmount.value.toFixed(2)
-
     if (cup === 'Cups' || (cup !== 'Cups' && unit !== 'Cup')) {
-      const amountEnd = displayAmount.value.split('.').pop()
-
-      switch (amountEnd) {
-        case '25':
-          displayAmount.value = displayAmount.value.replace('.25', `¼`)
-          break
-        case '33':
-          displayAmount.value = displayAmount.value.replace('.33', `⅓`)
-          break
-        case '50':
-          displayAmount.value = displayAmount.value.replace('.50', `½`)
-          break
-        case '66':
-          displayAmount.value = displayAmount.value.replace('.66', `⅔`)
-          break
-        case '75':
-          displayAmount.value = displayAmount.value.replace('.75', `¾`)
-          break
-        default:
-          break
-      }
-
-      // Get rid of any leading zero
-      if (displayAmount.value[0] === '0') {
-        displayAmount.value = displayAmount.value.slice(1)
-      }
+      displayAmount.valueFraction = valueFraction(displayAmount.value)
     }
   }
 
   // Clean up
-  if (displayAmount && displayAmount.unitTitle === 'Quantity') {
-    displayAmount.unitTitle = ''
+  if (displayAmount && displayAmount.single === 'Quantity') {
+    displayAmount.single = ''
   }
 
   return (
@@ -110,11 +120,13 @@ function Amount({ ingredient }) {
       <span className="flex-1">
         {displayAmount && (
           <span className="font-mono text-xs text-caramel-700 whitespace-nowrap">
-            {displayAmount.value}
+            {displayAmount.value && !displayAmount.valueFraction
+              ? parseFloat(displayAmount.value.toFixed())
+              : displayAmount.valueFraction}
             {` `}
-            {displayAmount.value > 1 && displayAmount.unitTitlePlural
-              ? displayAmount.unitTitlePlural
-              : displayAmount.unitTitle}
+            {displayAmount.value > 1 && displayAmount.plural
+              ? displayAmount.plural
+              : displayAmount.single}
             {` `}
           </span>
         )}
@@ -152,21 +164,6 @@ function Amount({ ingredient }) {
       )}
     </span>
   )
-}
-
-Amount.propTypes = {
-  ingredient: PropTypes.shape({
-    amount: PropTypes.shape({
-      amounts: PropTypes.array,
-      type: PropTypes.string,
-      unit: PropTypes.string,
-    }),
-    ingredient: PropTypes.shape({
-      cupInGrams: PropTypes.number,
-      title: PropTypes.string,
-    }),
-    note: PropTypes.string,
-  }),
 }
 
 export default Amount

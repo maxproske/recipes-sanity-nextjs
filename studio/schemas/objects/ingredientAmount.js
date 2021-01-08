@@ -7,8 +7,6 @@ const ingredientShape = [
   qF('unit'),
   qF('standard'),
   qF('type'),
-  qF('unitTitle'),
-  qF('unitTitlePlural'),
 ]
 
 export default {

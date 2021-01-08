@@ -17,7 +17,6 @@ const createPatchFrom = (value) =>
 
 const IngredientPicker = React.forwardRef((props, ref) => {
   const { type, value, document, onChange } = props
-  console.log(props)
 
   // Split value into array for checking
   const [valueParsed, setValueParsed] = useState(value ? JSON.parse(value) : {})
@@ -38,7 +37,7 @@ const IngredientPicker = React.forwardRef((props, ref) => {
     const list = {}
 
     // forEach set
-    document.ingredients.forEach((set) => {
+    document.ingredientSets.forEach((set) => {
       list[set.title] = {}
 
       // forEach ingredient in set
@@ -54,7 +53,7 @@ const IngredientPicker = React.forwardRef((props, ref) => {
     })
 
     return list
-  }, [document.ingredients, allIngredients])
+  }, [document.ingredientSets, allIngredients])
 
   // 6. Called by the Sanity form-builder when this input should receive focus
   // focus = () => {

@@ -1,10 +1,10 @@
 import S from '@sanity/desk-tool/structure-builder'
-import { MdDashboard, MdSettings } from 'react-icons/md'
+import { FiBook, FiBookmark, FiSettings } from 'react-icons/fi'
 
 // We filter document types defined in structure to prevent
 // them from being listed twice
 const hiddenDocTypes = (listItem) =>
-  !['page', 'route', 'site-config'].includes(listItem.getId())
+  !['site-config', 'recipe', 'ingredient'].includes(listItem.getId())
 
 export default () =>
   S.list()
@@ -12,7 +12,7 @@ export default () =>
     .items([
       S.listItem()
         .title('Site config')
-        .icon(MdSettings)
+        .icon(FiSettings)
         .child(
           S.editor()
             .id('config')
@@ -20,13 +20,14 @@ export default () =>
             .documentId('global-config')
         ),
       S.listItem()
-        .title('Pages')
-        .icon(MdDashboard)
-        .schemaType('page')
-        .child(S.documentTypeList('page').title('Pages')),
+        .icon(FiBook)
+        .title('Recipes')
+        .schemaType('recipe')
+        .child(S.documentTypeList('recipe').title('Recipes')),
       S.listItem()
-        .title('Routes')
-        .schemaType('route')
-        .child(S.documentTypeList('route').title('Routes')),
+        .icon(FiBookmark)
+        .title('Ingredients')
+        .schemaType('ingredient')
+        .child(S.documentTypeList('ingredient').title('Ingredients')),
       ...S.documentTypeListItems().filter(hiddenDocTypes),
     ])

@@ -5,7 +5,7 @@ import Step from './MethodStep/Step'
 import Title from './MethodStep/Title'
 import Heading from './Heading'
 
-function Method({ method, ingredients }) {
+function Method({ method, ingredientSets }) {
   let methodCount = 0
 
   return (
@@ -23,7 +23,7 @@ function Method({ method, ingredients }) {
             {step._type === 'title' && <Title step={step} />}
             {step._type === 'component' && (
               <Component
-                allIngredients={ingredients}
+                allIngredients={ingredientSets}
                 count={methodCount}
                 step={step}
               />
@@ -38,7 +38,7 @@ function Method({ method, ingredients }) {
 
 Method.propTypes = {
   method: PropTypes.array,
-  ingredients: PropTypes.array,
+  ingredientSets: PropTypes.array,
 }
 
 export default Method
