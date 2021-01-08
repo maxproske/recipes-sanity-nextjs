@@ -17,7 +17,6 @@ export default {
   ...qF('recipe', 'document'),
   fields: [
     qF('title'),
-    qF('amount', 'ingredientAmount'),
     qF('description', 'text', { rows: 3 }),
     qF('slug', 'slug', { source: 'title' }),
     qF('published', 'date'),

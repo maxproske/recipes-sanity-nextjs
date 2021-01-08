@@ -19,7 +19,8 @@ function Amount({ ingredient }) {
 
   const { amount, note } = ingredient
   const { unit, amounts } = amount
-  const { cupInGrams } = ingredient.ingredient
+  const { plural, cupInGrams } = ingredient.ingredient
+  const displayIngredient = ingredient.ingredient
 
   const cup = useStore((state) => state.cup)
   const serves = useStore((state) => state.serves)
@@ -110,6 +111,10 @@ function Amount({ ingredient }) {
   // Clean up
   if (displayAmount && displayAmount.single === 'Quantity') {
     displayAmount.single = ''
+
+    if (displayAmount.value > 1 && displayIngredient.plural) {
+      displayIngredient.title = displayIngredient.plural
+    }
   }
 
   return (
@@ -133,12 +138,12 @@ function Amount({ ingredient }) {
         <span className="text-sm font-serif text-caramel-900 group-hover:text-caramel-700">
           {note ? (
             <>
-              {ingredient.ingredient.title}
+              {displayIngredient.title}
               <br />
               <span className="text-caramel-500 italic">{note}</span>
             </>
           ) : (
-            ingredient.ingredient.title
+            displayIngredient.title
           )}
         </span>
       </span>
@@ -164,6 +169,21 @@ function Amount({ ingredient }) {
       )}
     </span>
   )
+}
+
+Amount.propTypes = {
+  ingredient: PropTypes.shape({
+    amount: PropTypes.shape({
+      amounts: PropTypes.array,
+      unit: PropTypes.string,
+    }),
+    ingredient: PropTypes.shape({
+      cupInGrams: PropTypes.number,
+      plural: PropTypes.string,
+      title: PropTypes.string,
+    }),
+    note: PropTypes.string,
+  }),
 }
 
 export default Amount

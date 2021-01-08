@@ -5,12 +5,12 @@
 
 @screen md {
   .banner h1 {
-    -webkit-text-stroke: 1px theme("colors.caramel.500");
+    -webkit-text-stroke: 1px theme("colors.caramel.800");
     color: theme("colors.caramel.100");
-    text-shadow: 3px 3px 0 theme("colors.caramel.500"),
-      -1px -1px 0 theme("colors.caramel.500"),
-      1px -1px 0 theme("colors.caramel.500"),
-      -1px 1px 0 theme("colors.caramel.500"),
-      1px 1px 0 theme("colors.caramel.500");
+    text-shadow: 3px 3px 0 theme("colors.caramel.800"),
+      -1px -1px 0 theme("colors.caramel.800"),
+      1px -1px 0 theme("colors.caramel.800"),
+      -1px 1px 0 theme("colors.caramel.800"),
+      1px 1px 0 theme("colors.caramel.800");
   }
 }
