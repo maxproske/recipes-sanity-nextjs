@@ -23,31 +23,36 @@ export function convertCups(value, cupInGrams, cup, standard) {
 export function valueFraction(value) {
   let withFraction
 
-  const valueString = value.toFixed(2)
+  const valueString = value.toFixed(3)
   const amountEnd = valueString.split('.').pop()
 
   switch (amountEnd) {
-    case '25':
-      withFraction = valueString.replace('.25', `¼`)
+    case '125':
+      withFraction = valueString.replace('.125', `⅛`)
       break
-    case '33':
-      withFraction = valueString.replace('.33', `⅓`)
+    case '250':
+      withFraction = valueString.replace('.250', `¼`)
       break
-    case '50':
-      withFraction = valueString.replace('.50', `½`)
+    case '333':
+      withFraction = valueString.replace('.333', `⅓`)
       break
-    case '66':
-      withFraction = valueString.replace('.66', `⅔`)
+    case '500':
+      withFraction = valueString.replace('.500', `½`)
       break
-    case '75':
-      withFraction = valueString.replace('.75', `¾`)
+    case '666':
+      withFraction = valueString.replace('.666', `⅔`)
       break
+    case '750':
+      withFraction = valueString.replace('.750', `¾`)
+      break
+
     default:
+      withFraction = value
       break
   }
 
   // Get rid of any leading zero
-  if (withFraction[0] === '0') {
+  if (withFraction && withFraction[0] === '0') {
     withFraction = withFraction.slice(1)
   }
 

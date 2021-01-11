@@ -5,7 +5,7 @@ import Heading from '../Heading'
 function IngredientModal({ ingredient, close }) {
   const { alternativeNames, title } = ingredient
   return (
-    <div className="inset-0 fixed bg-caramel-900 bg-opacity-90 p-4 md:p-12 flex justify-center items-start">
+    <div className="inset-0 fixed z-50 bg-caramel-900 bg-opacity-90 p-4 md:p-12 flex justify-center items-start">
       <button
         className="absolute w-full h-full inset-0"
         type="button"

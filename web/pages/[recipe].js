@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import Image from 'next/image'
 import groq from 'groq'
 import Layout from '../components/Layout'
 import Method from '../components/Method'
@@ -18,6 +19,15 @@ export default function Recipe({ recipe }) {
         <Controls />
         <section className="max-w-4xl mx-auto p-4">
           <Ingredients ingredientSets={ingredientSets} />
+          <figure className="w-full h-auto mb-12">
+            <Image
+              className="object-cover"
+              src="/images/caramel-slice.jpg"
+              alt=""
+              width={900}
+              height={350}
+            />
+          </figure>
           <Method ingredientSets={ingredientSets} method={method} />
         </section>
       </main>

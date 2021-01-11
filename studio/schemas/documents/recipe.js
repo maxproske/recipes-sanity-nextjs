@@ -17,9 +17,9 @@ export default {
   ...qF('recipe', 'document'),
   fields: [
     qF('title'),
-    qF('description', 'text', { rows: 3 }),
     qF('slug', 'slug', { source: 'title' }),
-    qF('published', 'date'),
+    qF('description', 'text', { rows: 3 }),
+    // qF('published', 'date'),
     qFB('ingredientSets', 'array').children([
       qFB('set', 'object', { icon: FiBox }).children([
         qF('title'),
@@ -125,6 +125,7 @@ export default {
   preview: {
     select: {
       title: 'title',
+      subtitle: 'slug.current',
     },
   },
 }

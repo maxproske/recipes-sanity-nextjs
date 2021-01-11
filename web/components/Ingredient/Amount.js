@@ -125,9 +125,13 @@ function Amount({ ingredient }) {
       <span className="flex-1">
         {displayAmount && (
           <span className="font-mono text-xs text-caramel-700 whitespace-nowrap">
-            {displayAmount.value && !displayAmount.valueFraction
-              ? parseFloat(displayAmount.value.toFixed())
-              : displayAmount.valueFraction}
+            {displayAmount.value && !displayAmount.valueFraction ? (
+              parseFloat(displayAmount.value.toFixed())
+            ) : (
+              <span className="transform scale-125 inline-block">
+                {displayAmount.valueFraction}
+              </span>
+            )}
             {` `}
             {displayAmount.value > 1 && displayAmount.plural
               ? displayAmount.plural

@@ -87,14 +87,14 @@ const IngredientPicker = React.forwardRef((props, ref) => {
 
   return (
     <FormField label={type.title} description={type.description}>
-      <Button
+      {/* <Button
         onClick={() => {
           onChange(createPatchFrom(JSON.stringify({})))
           setValueParsed({})
         }}
         padding={[3, 3, 4]}
         text="Reset Values"
-      />
+      /> */}
       {value && false && (
         <div
           style={{

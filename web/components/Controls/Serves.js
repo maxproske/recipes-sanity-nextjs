@@ -9,16 +9,16 @@ function Serves() {
   const buttonClasses = `flex items-center justify-center m-1 text-caramel-500 hover:text-caramel-600 hover:bg-white transition-colors duration-100`
   const buttons = [
     {
-      increment: -1,
-      disabled: serves <= 1,
+      increment: serves === 1 ? -0.5 : -1,
+      disabled: serves <= 0.5,
       classes: `${buttonClasses} ${
-        serves <= 1 ? `opacity-25 pointer-events-none` : ``
+        serves <= 0.5 ? `opacity-25 pointer-events-none` : ``
       }`,
       icon: <MinusSmSolid className="w-5 h-auto" />,
       sr: `One Less Serve`,
     },
     {
-      increment: 1,
+      increment: serves === 0.5 ? +0.5 : 1,
       disabled: false,
       classes: buttonClasses,
       icon: <PlusSmSolid className="w-5 h-auto" />,
@@ -40,7 +40,7 @@ function Serves() {
           </button>
           {!index && (
             <div className="text-caramel-900 text-center p-2 border-l border-r border-caramel-200">
-              {serves} {serves === 1 ? `Serve` : `Serves`}
+              {serves} {serves > 1 ? `Serves` : `Serve`}
             </div>
           )}
         </React.Fragment>
