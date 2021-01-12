@@ -19,6 +19,7 @@ export default {
     qF('title'),
     qF('slug', 'slug', { source: 'title' }),
     qF('description', 'text', { rows: 3 }),
+    qF('featuredImage', 'image'),
     // qF('published', 'date'),
     qFB('ingredientSets', 'array').children([
       qFB('set', 'object', { icon: FiBox }).children([
@@ -126,6 +127,16 @@ export default {
     select: {
       title: 'title',
       subtitle: 'slug.current',
+      media: 'featuredImage',
+    },
+    prepare(selection) {
+      const { title, subtitle, media } = selection
+
+      return {
+        title,
+        subtitle: `/${subtitle}`,
+        media,
+      }
     },
   },
 }
