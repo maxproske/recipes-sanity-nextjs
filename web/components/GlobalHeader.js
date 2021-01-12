@@ -17,7 +17,7 @@ function GlobalHeader() {
             </a>
           </Link>
         )}
-        <span className="ml-auto">Recipe Website</span>
+        <span className="ml-auto">Recipes Website</span>
       </div>
     </header>
   )

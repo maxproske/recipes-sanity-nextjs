@@ -9,7 +9,7 @@ import Heading from '../components/Heading'
 export default function Home({ recipeList }) {
   return (
     <Layout>
-      <main className="min-h-screen">
+      <main className="pb-24">
         <div className="p-12 text-center">
           <Heading as="h1">All Recipes</Heading>
         </div>
