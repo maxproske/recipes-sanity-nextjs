@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ['Domaine', ...defaultTheme.fontFamily.serif],
+        // serif: ['Domaine', ...defaultTheme.fontFamily.serif],
         display: ['Brandon Grotesque', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
