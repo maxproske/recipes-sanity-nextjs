@@ -21,6 +21,7 @@ export default {
     qF('description', 'text', { rows: 3 }),
     qF('featuredImage', 'image'),
     // qF('published', 'date'),
+    qF('category', 'reference', { to: { type: 'category' } }),
     qFB('ingredientSets', 'array').children([
       qFB('set', 'object', { icon: FiBox }).children([
         qF('title'),

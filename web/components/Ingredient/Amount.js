@@ -14,7 +14,7 @@ function hasModalContent(ingredient) {
   return alternativeNames && alternativeNames.length > 0
 }
 
-function Amount({ ingredient }) {
+function Amount({ ingredient, dot }) {
   const [openModal, setOpenModal] = useState(false)
 
   const { amount, note } = ingredient
@@ -119,9 +119,11 @@ function Amount({ ingredient }) {
 
   return (
     <span className="w-full inline-flex group relative py-1">
-      <span className="hidden sm:inline text-caramel-400 pr-1 text-lg leading-none">
-        •
-      </span>
+      {dot && (
+        <span className="hidden sm:inline text-caramel-400 pr-1 text-lg leading-none">
+          •
+        </span>
+      )}
       <span className="flex-1">
         {displayAmount && (
           <span className="font-mono text-xs text-caramel-700 whitespace-nowrap">
@@ -188,6 +190,11 @@ Amount.propTypes = {
     }),
     note: PropTypes.string,
   }),
+  dot: PropTypes.bool,
+}
+
+Amount.defaultProps = {
+  dot: true,
 }
 
 export default Amount

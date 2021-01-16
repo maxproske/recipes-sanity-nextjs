@@ -21,6 +21,7 @@ import simplePortableText from './objects/simplePortableText'
 import ingredientPicker from './objects/ingredientPicker'
 import ingredientAmount from './objects/ingredientAmount'
 import temperature from './objects/temperature'
+import category from './documents/category'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -35,6 +36,7 @@ export default createSchema({
     link,
     recipe,
     ingredient,
+    category,
     portableText,
     simplePortableText,
     siteConfig,

@@ -21,6 +21,11 @@ export default function Home({ recipeList }) {
             >
               <div className="absolute inset-0 m-2 md:m-4 border border-caramel-200" />
               <Heading>{recipe.title}</Heading>
+              {recipe?.category?.title && (
+                <p className="font-serif italic text-caramel-500 mb-2">
+                  {recipe.category.title}
+                </p>
+              )}
               <Link href={`/${recipe.slug.current}`}>
                 <a className="label">
                   View Recipe <span className="absolute inset-0" />
@@ -39,7 +44,10 @@ Home.propTypes = {
 }
 
 export async function getStaticProps({ params }) {
-  const allRecipesQuery = groq`*[_type == "recipe"]`
+  const allRecipesQuery = groq`*[_type == "recipe"]{
+    ...,
+    category->
+  }`
   const recipeList = await client.fetch(allRecipesQuery).then((res) => res)
 
   return {

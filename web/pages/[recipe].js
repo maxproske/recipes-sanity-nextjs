@@ -15,7 +15,14 @@ const featuredImageSize = {
   height: 400,
 }
 export default function Recipe({ recipe }) {
-  const { title, featuredImage, description, ingredientSets, method } = recipe
+  const {
+    title,
+    featuredImage,
+    description,
+    ingredientSets,
+    method,
+    category,
+  } = recipe
   const featuredImageUrl = useMemo(
     () =>
       urlFor(featuredImage)
@@ -28,7 +35,9 @@ export default function Recipe({ recipe }) {
   return (
     <Layout>
       <main>
-        <Banner description={description}>{title}</Banner>
+        <Banner description={description} category={category.title}>
+          {title}
+        </Banner>
         <Controls />
         <section className="max-w-4xl mx-auto p-4">
           <Ingredients ingredientSets={ingredientSets} />
@@ -73,6 +82,7 @@ export async function getStaticProps({ params }) {
   const recipeQuery = groq`
   *[_type == "recipe" && slug.current == "${params.recipe}"][0]{
     ...,
+    category->,
     ingredientSets[] {
       ...,
       ingredients[] {

@@ -12,13 +12,19 @@ function Ingredients({ ingredientSets }) {
         {ingredientSets.map((set) => (
           <div key={set._key} className="px-4 mb-8 sm:mb-0 flex-1">
             <Heading as="h3">{set.title}</Heading>
-            <ul className="text-sm grid gap-x-4 grid-cols-2 sm:gap-0 sm:grid-cols-1 border-b border-caramel-200">
+            <ul
+              className={`text-sm grid gap-x-4 grid-cols-2 ${
+                ingredientSets.length === 1
+                  ? `sm:grid-cols-3`
+                  : `sm:gap-0 sm:grid-cols-1`
+              } `}
+            >
               {set.ingredients.map((ingredient) => (
                 <li
                   key={ingredient._key}
-                  className="py-1 border-t border-caramel-200"
+                  className="py-1 border-b border-caramel-200"
                 >
-                  <Amount ingredient={ingredient} />
+                  <Amount dot={false} ingredient={ingredient} />
                 </li>
               ))}
             </ul>
