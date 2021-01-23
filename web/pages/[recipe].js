@@ -12,8 +12,8 @@ import Controls from '../components/Controls/index'
 import { urlFor } from '../lib/sanity'
 
 const featuredImageSize = {
-  width: 900,
-  height: 400,
+  width: 1200,
+  height: 600,
 }
 export default function Recipe({ recipe }) {
   const {
