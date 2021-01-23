@@ -13,7 +13,7 @@ export const units = {
     standard: 'Traditional',
   },
   tsp: { single: 'Tsp', type: 'Volume', standard: 'Traditional' },
-  tbsp: { single: 'Tbsp', type: 'Volume', standard: 'Traditional' },
+  Tbs: { single: 'Tbsp', type: 'Volume', standard: 'Traditional' },
   g: {
     single: 'Gram',
     plural: 'Grams',

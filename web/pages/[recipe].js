@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useMemo } from 'react'
 import Image from 'next/image'
 import groq from 'groq'
+import { NextSeo } from 'next-seo'
 import Layout from '../components/Layout'
 import Method from '../components/Method'
 import Ingredients from '../components/Ingredients'
@@ -34,6 +35,7 @@ export default function Recipe({ recipe }) {
 
   return (
     <Layout>
+      <NextSeo title={title} description={description} />
       <main>
         <Banner description={description} category={category.title}>
           {title}

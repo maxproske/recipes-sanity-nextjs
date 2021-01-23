@@ -35,6 +35,7 @@ export default function convertedAmounts(value, unit) {
   const doNotConvert = ['Traditional', 'Fuzzy']
   const thisUnit = units[unit]
   const conversionMatches = []
+
   if (thisUnit) {
     Object.keys(units).forEach((key) => {
       if (

@@ -18,7 +18,10 @@ function Amount({ ingredient, dot }) {
   const [openModal, setOpenModal] = useState(false)
 
   const { amount, note } = ingredient
-  const { unit, amounts } = amount
+
+  const unit = amount ? amount.unit : ''
+  const amounts = amount ? amount.amounts : []
+
   const { plural, cupInGrams } = ingredient.ingredient
   const displayIngredient = ingredient.ingredient
 
@@ -26,11 +29,9 @@ function Amount({ ingredient, dot }) {
   const serves = useStore((state) => state.serves)
   const standard = useStore((state) => state.standard)
 
-  //
-  const amountBase = {
-    ...amount,
-    ...units[amount.unit],
-  }
+  const amountBase = {}
+
+  unit ? { ...amountBase, ...units[unit] } : { ...amountBase }
 
   // Get all amounts and update values for serves
   const displayAmounts = amounts.map((item) => ({
@@ -125,10 +126,11 @@ function Amount({ ingredient, dot }) {
         </span>
       )}
       <span className="flex-1">
-        {displayAmount && (
+        {displayAmount.value && (
           <span className="font-mono text-xs text-caramel-700 whitespace-nowrap">
+            {/* parseFloat(displayAmount.value.toFixed()) */}
             {displayAmount.value && !displayAmount.valueFraction ? (
-              parseFloat(displayAmount.value.toFixed())
+              <>{displayAmount.value}</>
             ) : (
               <span className="transform scale-125 inline-block">
                 {displayAmount.valueFraction}
@@ -178,6 +180,7 @@ function Amount({ ingredient, dot }) {
 }
 
 Amount.propTypes = {
+  dot: PropTypes.bool,
   ingredient: PropTypes.shape({
     amount: PropTypes.shape({
       amounts: PropTypes.array,
@@ -190,11 +193,6 @@ Amount.propTypes = {
     }),
     note: PropTypes.string,
   }),
-  dot: PropTypes.bool,
-}
-
-Amount.defaultProps = {
-  dot: true,
 }
 
 export default Amount

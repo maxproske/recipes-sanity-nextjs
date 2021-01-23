@@ -46,6 +46,12 @@ export default {
               prepare(selection) {
                 const { ingredient, amount, unit, note } = selection
 
+                if (!amount && !unit) {
+                  return {
+                    title: ingredient,
+                  }
+                }
+
                 const unitLabel =
                   amount > 1 && units[unit].plural
                     ? units[unit].plural
