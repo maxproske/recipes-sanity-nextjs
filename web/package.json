@@ -5,7 +5,7 @@
   "author": "simeonGriggs <simeon@hey.com>",
   "scripts": {
     "dev": "IP=$(ipconfig getifaddr en0); next dev -H $IP",
-    "build": "next build && next export && node exportSitemap.js",
+    "build": "node exportSitemap.js && next build && next export",
     "format": "prettier-eslint --write \"**/*.js\" \"!.next/**\" \"!node_modules/**\" \"!out/**\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
