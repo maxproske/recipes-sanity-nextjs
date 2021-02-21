@@ -1,26 +1,17 @@
 const sm = require('sitemap')
 const fs = require('fs')
 const { exportPathMap } = require('./next.config')
-const client = require('./client')
 
-client.fetch(`*[_id == "global-config"] {url}[0]`).then((config) => {
-  exportPathMap().then((res) => {
-    const sitemap = sm.createSitemap({
-      hostname: config.url,
-      cacheTime: 600000, // 600 sec (10 min) cache purge period
-    })
+exportPathMap().then((res) => {
+  const sitemap = sm.createSitemap({
+    hostname: `https://recipes.simeongriggs.dev`,
+    cacheTime: 600000, // 600 sec (10 min) cache purge period
+  })
 
-    Object.keys(res).map((page) => {
-      const item = res[page]
-      const { includeInSitemap, disallowRobots, _updatedAt } = item
-      if (includeInSitemap && !disallowRobots) {
-        sitemap.add({ url: page, lastmod: new Date(_updatedAt) })
-      }
-    })
+  Object.keys(res).map((page) => sitemap.add({ url: page }))
 
-    fs.writeFile(`./out/sitemap.xml`, sitemap.toString(), (err) => {
-      if (err) throw err
-      console.log(`sitemap.xml updated`)
-    })
+  fs.writeFile(`./public/sitemap.xml`, sitemap.toString(), (err) => {
+    if (err) throw err
+    console.log(`sitemap.xml updated`)
   })
 })
