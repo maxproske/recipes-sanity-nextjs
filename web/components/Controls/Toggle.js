@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { coolGray } from 'tailwindcss/colors'
 
 function Toggle({ name, options, current, changeFunction }) {
   return (

@@ -22,16 +22,20 @@ function Amount({ ingredient, dot }) {
   const unit = amount ? amount.unit : ''
   const amounts = amount ? amount.amounts : []
 
-  const { plural, cupInGrams } = ingredient.ingredient
+  const { cupInGrams } = ingredient.ingredient
   const displayIngredient = ingredient.ingredient
 
   const cup = useStore((state) => state.cup)
   const serves = useStore((state) => state.serves)
   const standard = useStore((state) => state.standard)
 
-  const amountBase = {}
+  // const amountBase = {}
+  // unit ? { ...amountBase, ...units[unit] } : { ...amountBase }
 
-  unit ? { ...amountBase, ...units[unit] } : { ...amountBase }
+  const amountBase = {
+    ...amount,
+    ...units[amount.unit],
+  }
 
   // Get all amounts and update values for serves
   const displayAmounts = amounts.map((item) => ({
@@ -128,9 +132,8 @@ function Amount({ ingredient, dot }) {
       <span className="flex-1">
         {displayAmount.value && (
           <span className="font-mono text-xs text-caramel-700 whitespace-nowrap">
-            {/* parseFloat(displayAmount.value.toFixed()) */}
             {displayAmount.value && !displayAmount.valueFraction ? (
-              <>{displayAmount.value}</>
+              parseFloat(displayAmount.value.toFixed())
             ) : (
               <span className="transform scale-125 inline-block">
                 {displayAmount.valueFraction}
