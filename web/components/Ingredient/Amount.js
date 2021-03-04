@@ -32,10 +32,9 @@ function Amount({ ingredient, dot }) {
   // const amountBase = {}
   // unit ? { ...amountBase, ...units[unit] } : { ...amountBase }
 
-  const amountBase = {
-    ...amount,
-    ...units[amount.unit],
-  }
+  const amountBase = amount?.unit
+    ? { ...amount, ...units[amount.unit] }
+    : amount
 
   // Get all amounts and update values for serves
   const displayAmounts = amounts.map((item) => ({
@@ -180,22 +179,6 @@ function Amount({ ingredient, dot }) {
       )}
     </span>
   )
-}
-
-Amount.propTypes = {
-  dot: PropTypes.bool,
-  ingredient: PropTypes.shape({
-    amount: PropTypes.shape({
-      amounts: PropTypes.array,
-      unit: PropTypes.string,
-    }),
-    ingredient: PropTypes.shape({
-      cupInGrams: PropTypes.number,
-      plural: PropTypes.string,
-      title: PropTypes.string,
-    }),
-    note: PropTypes.string,
-  }),
 }
 
 export default Amount
