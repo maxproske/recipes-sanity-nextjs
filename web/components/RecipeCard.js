@@ -64,7 +64,7 @@ RecipeCard.propTypes = {
     category: PropTypes.shape({
       title: PropTypes.string,
     }),
-    featuredImage: PropTypes.string,
+    featuredImage: PropTypes.object,
     slug: PropTypes.shape({
       current: PropTypes.string,
     }),

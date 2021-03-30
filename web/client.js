@@ -5,6 +5,7 @@ const client = sanityClient({
   dataset: 'production',
   token: '', // or leave blank to be anonymous user
   useCdn: false, // `false` if you want to ensure fresh data
+  apiVersion: '2021-03-25', // use a UTC date string
 })
 
 module.exports = client

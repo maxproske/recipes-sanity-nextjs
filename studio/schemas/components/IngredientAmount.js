@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { withDocument } from 'part:@sanity/form-builder'
 
@@ -6,8 +6,8 @@ import { withDocument } from 'part:@sanity/form-builder'
 import FormField from 'part:@sanity/components/formfields/default'
 import PatchEvent, { set, unset } from 'part:@sanity/form-builder/patch-event'
 
-import { TextInput, Stack, Flex, Radio, Label, Select } from '@sanity/ui'
-import { getUnitDetails, options, units, unitDropdown } from './amountSettings'
+import { TextInput, Flex, Label, Select } from '@sanity/ui'
+import { options, units, unitDropdown } from './amountSettings'
 
 // Import the TextInput from UI
 import convertedAmounts from './convertedAmounts'
@@ -24,7 +24,6 @@ const IngredientAmount = React.forwardRef((props, ref) => {
   options.forEach(
     (option) => (initialOptions[option.title] = option.options[0])
   )
-  const [settings, setSettings] = useState(initialOptions)
   const unitsRef = useRef()
 
   // Local state
@@ -68,13 +67,6 @@ const IngredientAmount = React.forwardRef((props, ref) => {
     }
   }, [])
 
-  // When Radio buttons are used
-  const changeSetting = (key, newSetting) => {
-    const currentSettings = { ...settings, [key]: newSetting }
-
-    setSettings(currentSettings)
-  }
-
   return (
     <FormField label={type.title} description={type.description}>
       <Flex style={{ gap: `1rem` }}>
@@ -113,42 +105,6 @@ const IngredientAmount = React.forwardRef((props, ref) => {
         </Select>
       </Flex>
 
-      {/* <Flex style={{ gap: `2rem`, padding: `1rem 0` }}>
-        {options.map((option) => (
-          <Stack space={3} key={option.title}>
-            <Label size={1}>{option.title}</Label>
-            <Flex>
-              {option.options.map((subOption) => {
-                const optionId = `${option.title}-${subOption}`.toLowerCase()
-
-                return (
-                  <div key={optionId}>
-                    <label
-                      htmlFor={optionId}
-                      style={{
-                        display: `flex`,
-                        alignItems: `center`,
-                        paddingRight: `1rem`,
-                      }}
-                    >
-                      <Radio
-                        id={optionId}
-                        checked={settings[option.title] === subOption}
-                        onChange={() => changeSetting(option.title, subOption)}
-                        name={option.title}
-                        value={subOption}
-                        style={{ marginRight: `.25rem` }}
-                      />
-                      {subOption}
-                    </label>
-                  </div>
-                )
-              })}
-            </Flex>
-          </Stack>
-        ))}
-      </Flex> */}
-
       {localValue.amounts && localValue.amounts.length > 0 && (
         <>
           <Label
@@ -181,23 +137,6 @@ const IngredientAmount = React.forwardRef((props, ref) => {
           </Flex>
         </>
       )}
-
-      {/* <div style={{ display: 'flex', alignItems: `center` }}>
-        {localValue && (
-          <pre
-            style={{
-              padding: '1rem',
-              marginRight: '1rem',
-              marginBottom: '1rem',
-              backgroundColor: '#efefef',
-              width: '100%',
-              fontSize: '12px',
-            }}
-          >
-            {JSON.stringify(localValue, undefined, `  `)}
-          </pre>
-        )}
-      </div> */}
     </FormField>
   )
 })
