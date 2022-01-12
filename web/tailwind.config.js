@@ -1,13 +1,12 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
-const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: [`./components/**/*.js`, `./hooks/**/*.js`, `./pages/**/*.js`],
-  darkMode: false, // or 'media' or 'class'
+  content: [`./components/**/*.js`, `./hooks/**/*.js`, `./pages/**/*.js`],
+  darkMode: `media`, // or 'media' or 'class'
   theme: {
     extend: {
       fontFamily: {
-        // serif: ['Domaine', ...defaultTheme.fontFamily.serif],
+        serif: ['Domaine', ...defaultTheme.fontFamily.serif],
         display: ['Brandon Grotesque', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
@@ -17,7 +16,6 @@ module.exports = {
         mega: '0.33em',
       },
       colors: {
-        gray: colors.warmGray,
         caramel: {
           100: '#fbf7f4',
           200: '#e9d4c3',

@@ -1,6 +1,7 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { withDocument } from 'part:@sanity/form-builder'
+import sanityClient from 'part:@sanity/base/client'
 
 // Important items to allow form fields to work properly and patch the dataset.
 import FormField from 'part:@sanity/components/formfields/default'
@@ -9,7 +10,7 @@ import PatchEvent, { set, unset } from 'part:@sanity/form-builder/patch-event'
 // Import the TextInput from UI
 import { TextInput, Stack, Checkbox, Button } from '@sanity/ui'
 
-const client = require('../../../web/client')
+const client = sanityClient.withConfig({ apiVersion: `2021-05-19` })
 
 // 4. Create a Sanity PatchEvent based on a change in time value
 const createPatchFrom = (value) =>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Portal } from 'react-portal'
 import { InformationCircleSolid } from '@graywolfai/react-heroicons'
 
-import { units } from '../../../studio/schemas/components/amountSettings'
+import { units } from '../../../studio/src/schemas/components/amountSettings'
 import { useStore } from '../../hooks/useStore'
 import IngredientModal from './IngredientModal'
 import { convertCups, filterAmounts, valueFraction } from './amountHelpers'

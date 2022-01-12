@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import Amount from '../Ingredient/Amount'
-import PortableText from '../PortableText'
+import {PortableText} from '../../lib/sanity'
 import Count from './Count'
 
 function Component({ step, count, allIngredients }) {

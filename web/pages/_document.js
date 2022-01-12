@@ -1,11 +1,11 @@
 import React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
-import client from '../client'
+import { getClient } from '../lib/sanity.server'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx)
-    return client
+    return getClient()
       .fetch('*[_id == "global-config"] {lang}.lang[0]')
       .then((lang) => ({ ...initialProps, lang }))
   }

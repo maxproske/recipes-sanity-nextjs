@@ -6,6 +6,10 @@ import Title from './MethodStep/Title'
 import Heading from './Heading'
 
 function Method({ method, ingredientSets }) {
+  if (!method?.length || !ingredientSets?.length) {
+    return null
+  }
+
   let methodCount = 0
 
   return (

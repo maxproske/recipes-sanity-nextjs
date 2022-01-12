@@ -3,19 +3,35 @@ import React, { useMemo } from 'react'
 import Image from 'next/image'
 import groq from 'groq'
 import { NextSeo } from 'next-seo'
+
+import { urlFor, usePreviewSubscription } from '../lib/sanity'
+import { filterDataToSingleItem } from '../lib/filterDataToSingleItem'
+import { getClient } from '../lib/sanity.server'
+import { recipeQuery } from '../lib/queries'
+
 import Layout from '../components/Layout'
 import Method from '../components/Method'
 import Ingredients from '../components/Ingredients'
-import client from '../client'
+import ExitPreview from '../components/ExitPreview'
 import Banner from '../components/Banner'
-import Controls from '../components/Controls/index'
-import { urlFor } from '../lib/sanity'
+import Controls from '../components/Controls'
 
 const featuredImageSize = {
   width: 1200,
   height: 600,
 }
-export default function Recipe({ recipe }) {
+export default function Recipe({ data, preview }) {
+  const { data: previewData } = usePreviewSubscription(data?.query, {
+    params: data?.queryParams ?? {},
+    // The hook needs to know what we started with, to return it immediately
+    // This is what it's important to fetch draft content server-side!
+    initialData: data.page,
+    // The passed-down preview context determines whether this function does anything
+    enabled: preview,
+  })
+
+  const page = filterDataToSingleItem(previewData, preview)
+
   const {
     title,
     featuredImage,
@@ -23,7 +39,8 @@ export default function Recipe({ recipe }) {
     ingredientSets,
     method,
     category,
-  } = recipe
+  } = page ?? {}
+
   const featuredImageUrl = useMemo(
     () =>
       urlFor(featuredImage)
@@ -36,8 +53,9 @@ export default function Recipe({ recipe }) {
   return (
     <Layout>
       <NextSeo title={title} description={description} />
+      {preview && <ExitPreview />}
       <main>
-        <Banner description={description} category={category.title}>
+        <Banner description={description} category={category?.title}>
           {title}
         </Banner>
         <Controls />
@@ -65,37 +83,38 @@ Recipe.propTypes = {
   recipe: PropTypes.object,
 }
 
-export async function getStaticPaths() {
-  const allRecipesQuery = groq`*[_type == "recipe"]`
-  const allRecipesData = await client.fetch(allRecipesQuery).then((res) => res)
-  const allRecipesPaths = allRecipesData.map((recipe) => ({
-    params: {
-      recipe: recipe.slug.current,
-    },
-  }))
+export async function getStaticProps({ params, preview = false }) {
+  const recipeParams = { slug: params.recipe }
+  const data = await getClient(preview).fetch(recipeQuery, recipeParams)
+
+  // Escape hatch, if our query failed to return data
+  if (!data) return { notFound: true }
+
+  // Helper function to reduce all returned documents down to just one
+  const page = filterDataToSingleItem(data, preview)
 
   return {
-    paths: allRecipesPaths,
-    fallback: false,
+    props: {
+      // Pass-down the preview context
+      preview,
+      // Pass-down the initial content, and our query
+      data: {
+        page: page ?? null,
+        query: preview ? recipeQuery : null,
+        // query: recipeQuery,
+        queryParams: preview ? recipeParams : null,
+        // queryParams: recipeParams,
+      },
+    },
   }
 }
 
-export async function getStaticProps({ params }) {
-  const recipeQuery = groq`
-  *[_type == "recipe" && slug.current == "${params.recipe}"][0]{
-    ...,
-    category->,
-    ingredientSets[] {
-      ...,
-      ingredients[] {
-        ...,
-        ingredient->
-      }
-    }  
-  }`
-  const recipe = await client.fetch(recipeQuery).then((res) => res)
+export async function getStaticPaths() {
+  const allRecipesQuery = groq`*[_type == "recipe" && defined(slug.current)][].slug.current`
+  const allRecipeSlugs = await getClient().fetch(allRecipesQuery)
 
   return {
-    props: { recipe },
+    paths: allRecipeSlugs.map((slug) => `/${slug}`),
+    fallback: 'blocking',
   }
 }

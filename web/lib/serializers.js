@@ -1,6 +1,6 @@
-import Temperature from './Temperature'
+import Temperature from '../components/Temperature'
 
-const serializers = {
+export const serializers = {
   marks: {
     temperature: ({ mark }) => {
       const { temperature, measurement } = mark
@@ -8,5 +8,3 @@ const serializers = {
     },
   },
 }
-
-export default serializers

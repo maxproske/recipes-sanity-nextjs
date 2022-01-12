@@ -22,15 +22,15 @@
   "parts": [
     {
       "name": "part:@sanity/base/schema",
-      "path": "./schemas/schema.js"
+      "path": "./src/schemas/index"
     },
     {
       "implements": "part:@sanity/desk-tool/structure",
-      "path": "./deskStructure.js"
+      "path": "./src/desk-structure"
     },
     {
       "implements": "part:@sanity/dashboard/config",
-      "path": "./dashboardConfig.js"
+      "path": "./src/dashboard-config"
     }
   ]
 }

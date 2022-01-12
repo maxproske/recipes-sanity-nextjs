@@ -5,6 +5,10 @@ import Amount from './Ingredient/Amount'
 import Heading from './Heading'
 
 function Ingredients({ ingredientSets }) {
+  if (!ingredientSets?.length) {
+    return null
+  }
+
   return (
     <>
       <Heading>Ingredients</Heading>
