@@ -116,5 +116,6 @@ export async function getStaticPaths() {
   return {
     paths: allRecipeSlugs.map((slug) => `/${slug}`),
     fallback: 'blocking',
+    revalidate: 60,
   }
 }
