@@ -106,6 +106,7 @@ export async function getStaticProps({ params, preview = false }) {
         // queryParams: recipeParams,
       },
     },
+    revalidate: 60,
   }
 }
 
@@ -113,9 +114,11 @@ export async function getStaticPaths() {
   const allRecipesQuery = groq`*[_type == "recipe" && defined(slug.current)][].slug.current`
   const allRecipeSlugs = await getClient().fetch(allRecipesQuery)
 
+  // We'll pre-render only these paths at build time.
+  // fallback blocking will server-render pages
+  // on-demand if the path doesn't exist.
   return {
     paths: allRecipeSlugs.map((slug) => `/${slug}`),
     fallback: 'blocking',
-    revalidate: 60,
   }
 }
