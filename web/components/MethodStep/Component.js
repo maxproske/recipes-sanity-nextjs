@@ -44,7 +44,9 @@ function Component({ step, count, allIngredients }) {
       </div>
       <div className="md:flex col-span-3 font-serif text-lg leading-relaxed">
         <Count count={count} />
-        <PortableText blocks={step.description} />
+        <div className="prose text-caramel-800">
+          <PortableText blocks={step.description} />
+        </div>
       </div>
     </div>
   )

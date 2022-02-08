@@ -8,13 +8,15 @@ import RecipeCard from '../components/RecipeCard'
 import { getClient } from '../lib/sanity.server'
 import { allRecipesQuery } from '../lib/queries'
 
+console.log(process.env)
+
 export default function Home({ recipeList }) {
   return (
     <Layout>
-      <NextSeo title="All Recipes" description="A simeonGriggs Side Project" />
+      <NextSeo title="Half The Sugar, Twice The Ginger" />
       <main className="pb-24">
         <div className="p-12 text-center">
-          <Heading as="h1">All Recipes</Heading>
+          <Heading as="h1">Half The Sugar,<br/> Twice The Ginger</Heading>
         </div>
         <div className="w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
           {recipeList.map((recipe) => (
