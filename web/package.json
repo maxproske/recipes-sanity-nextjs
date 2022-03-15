@@ -2,7 +2,7 @@
   "private": true,
   "name": "recipes-sanity-nextjs",
   "version": "0.0.1",
-  "author": "simeonGriggs <simeon@hey.com>",
+  "author": "Max Proske <max@mproske.com>",
   "scripts": {
     "dev": "next dev",
     "dev:network": "IP=$(ipconfig getifaddr en0); next dev -H $IP",

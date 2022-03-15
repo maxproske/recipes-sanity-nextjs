@@ -29,7 +29,7 @@ client
   })
   .then((res) => {
     const sitemap = sm.createSitemap({
-      hostname: `https://recipes.simeongriggs.dev`,
+      hostname: `https://recipes.mproske.com`,
       cacheTime: 600000, // 600 sec (10 min) cache purge period
     })
 

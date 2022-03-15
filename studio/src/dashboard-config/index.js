@@ -7,12 +7,12 @@ export default {
         data: [
           {
             title: 'GitHub repo',
-            value: 'https://github.com/SimeonGriggs/recipes-sanity-nextjs',
+            value: 'https://github.com/maxproske/recipes-sanity-nextjs',
             category: 'Code',
           },
           {
             title: 'Frontend',
-            value: 'https://recipes.simeongriggs.dev',
+            value: 'https://recipes.mproske.com',
             category: 'apps',
           },
         ],
