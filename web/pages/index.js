@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { NextSeo } from 'next-seo'
+import Image from 'next/image'
+import Head from 'next/head'
 
 import Layout from '../components/Layout'
 import Heading from '../components/Heading'
@@ -14,8 +16,14 @@ export default function Home({ recipeList }) {
   return (
     <Layout>
       <NextSeo title="Half The Sugar, Twice The Ginger" />
+      <Head>
+        <link rel="icon" href="/img/logo-transparent.png" />
+      </Head>
       <main className="pb-24">
-        <div className="p-12 text-center">
+        <div className="p-12 text-center flex justify-center items-center">
+          <div className="w-24 inline-block">
+          <Image src="/img/logo-transparent.png" height="360" width="360" alt="Logo" />
+          </div>
           <Heading as="h1">Half The Sugar,<br/> Twice The Ginger</Heading>
         </div>
         <div className="w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 px-4">

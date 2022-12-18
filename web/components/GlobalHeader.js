@@ -17,7 +17,7 @@ function GlobalHeader() {
             </a>
           </Link>
         )}
-        <span className="ml-auto">Proske &amp; Swanson</span>
+        <span className="ml-auto">Proske, Swanson & Mahato</span>
       </div>
     </header>
   )
