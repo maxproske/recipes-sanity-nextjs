@@ -30,6 +30,23 @@ export const units = {
     plural: 'Sprinkles',
     standard: 'Fuzzy',
   },
+  lb: {
+    single: 'Lb',
+    plural: 'Lbs',
+    type: 'Weight',
+    standard: 'Imperial',
+  },
+  pt: {
+    single: 'Pint',
+    plural: 'Pints',
+    type: 'Volume',
+    standard: 'Imperial',
+  },
+  'to-taste': {
+    single: 'Pint',
+    plural: 'Pints',
+    standard: 'Fuzzy',
+  },
 }
 
 // Reshape Units Object to create dropdown menu
