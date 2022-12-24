@@ -72,7 +72,7 @@ export default function ConditionalLink({
   if (!path) return null
 
   return (
-    <Link href={path} passHref>
+    <Link href={path ?? ''} passHref>
       {onClick ? (
         <Anchor
           onClick={onClick}

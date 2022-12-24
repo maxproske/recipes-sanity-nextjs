@@ -41,7 +41,7 @@ function RecipeCard({ recipe }) {
       <div className="px-12 pt-6 pb-12">
         <span className="absolute inset-0 m-2 md:m-4 border border-caramel-200 pointer-events-none" />
         <Heading>
-          <Link href={slug?.current}>
+          <Link href={slug?.current ?? ''}>
             <a>
               {title}
               <span className="absolute inset-0" />
