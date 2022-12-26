@@ -116,7 +116,7 @@ function Amount({ ingredient, dot }) {
   if (displayAmount && displayAmount.single === 'Quantity') {
     displayAmount.single = ''
 
-    if (displayAmount.value > 1 && displayIngredient.plural) {
+    if (displayAmount.value !== 1 && displayIngredient.plural) {
       displayIngredient.title = displayIngredient.plural
     }
   }
