@@ -95,7 +95,7 @@ const IngredientAmount = React.forwardRef((props, ref) => {
             <optgroup key={`option-${unitKey}`} label={unitKey}>
               {unitDropdown()[unitKey].map((option) => (
                 <option key={option.value} value={option.value}>
-                  {option.plural && localValue.value > 1
+                  {option.plural && localValue.value !== 1
                     ? option.plural
                     : option.single}
                 </option>
@@ -128,7 +128,7 @@ const IngredientAmount = React.forwardRef((props, ref) => {
               >
                 {item.value}{' '}
                 {units[item.unit]
-                  ? units[item.unit].plural && item.value > 1
+                  ? units[item.unit].plural && item.value !== 1
                     ? units[item.unit].plural
                     : units[item.unit].single
                   : `No label`}

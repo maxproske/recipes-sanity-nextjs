@@ -139,7 +139,7 @@ function Amount({ ingredient, dot }) {
               </span>
             )}
             {` `}
-            {displayAmount.value > 1 && displayAmount.plural
+            {displayAmount.value !== 1 && displayAmount.plural
               ? displayAmount.plural
               : displayAmount.single}
             {` `}

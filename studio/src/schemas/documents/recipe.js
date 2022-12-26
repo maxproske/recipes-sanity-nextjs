@@ -53,7 +53,7 @@ export default {
                 }
 
                 const unitLabel =
-                  amount > 1 && units[unit].plural
+                  amount !== 1 && units[unit].plural
                     ? units[unit].plural
                     : units[unit].single
 
