@@ -10,9 +10,8 @@ import RecipeCard from '../components/RecipeCard'
 import { getClient } from '../lib/sanity.server'
 import { allRecipesQuery } from '../lib/queries'
 
-console.log(process.env)
-
 export default function Home({ recipeList }) {
+
   return (
     <Layout>
       <NextSeo title="Half The Sugar, Twice The Ginger" />
@@ -20,12 +19,18 @@ export default function Home({ recipeList }) {
         <link rel="icon" href="/img/logo-transparent.png" />
       </Head>
       <main className="pb-24">
-        <div className="p-12 text-center flex justify-center items-center">
+        <div className="p-12 text-center">
+          <div className="flex justify-center items-center">
           <div className="w-24 inline-block">
           <Image src="/img/logo-transparent.png" height="360" width="360" alt="Logo" />
           </div>
-          <Heading as="h1">Half The Sugar,<br/> Twice The Ginger</Heading>
+          <div>
+            <Heading as="h1">Half The Sugar,<br/> Twice The Ginger</Heading>
+            <span className="text-caramel-300 italic font-xs">{recipeList.length} recipes and counting!</span>
+          </div>
+          </div>
         </div>
+       
         <div className="w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
           {recipeList.map((recipe) => (
             <RecipeCard key={recipe._id} recipe={recipe} />
