@@ -13,7 +13,7 @@ export const recipeQuery = groq`
   }  
 }`
 
-export const allRecipesQuery = groq`*[_type == "recipe"]{
+export const allRecipesQuery = groq`*[_type == "recipe"] | order(_createdAt desc) {
   ...,
   category->
 }`
