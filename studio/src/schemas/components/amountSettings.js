@@ -43,8 +43,7 @@ export const units = {
     standard: 'Imperial',
   },
   'to-taste': {
-    single: 'Pint',
-    plural: 'Pints',
+    single: 'To Taste',
     standard: 'Fuzzy',
   },
 }
