@@ -1,16 +1,16 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { withDocument } from 'part:@sanity/form-builder'
-import sanityClient from 'part:@sanity/base/client'
+import { useClient } from 'sanity'
+import { useFormValue } from 'sanity'
 
 // Important items to allow form fields to work properly and patch the dataset.
-import FormField from 'part:@sanity/components/formfields/default'
-import PatchEvent, { set, unset } from 'part:@sanity/form-builder/patch-event'
+import { FormField } from '@sanity/base/components'
+import PatchEvent, {set, unset} from '@sanity/form-builder/PatchEvent'
 
 // Import the TextInput from UI
 import { TextInput, Stack, Checkbox, Button } from '@sanity/ui'
 
-const client = sanityClient.withConfig({ apiVersion: `2021-05-19` })
+const client = useClient().withConfig({apiVersion: '2021-10-21'})
 
 // 4. Create a Sanity PatchEvent based on a change in time value
 const createPatchFrom = (value) =>
@@ -18,6 +18,8 @@ const createPatchFrom = (value) =>
 
 const IngredientPicker = React.forwardRef((props, ref) => {
   const { type, value, document, onChange } = props
+
+  const ingredientSets = useFormValue([`ingredientSets`])
 
   // Split value into array for checking
   const [valueParsed, setValueParsed] = useState(value ? JSON.parse(value) : {})
@@ -38,7 +40,7 @@ const IngredientPicker = React.forwardRef((props, ref) => {
     const list = {}
 
     // forEach set
-    document.ingredientSets.forEach((set) => {
+    ingredientSets.forEach((set) => {
       list[set.title] = {}
 
       // forEach ingredient in set
@@ -54,7 +56,7 @@ const IngredientPicker = React.forwardRef((props, ref) => {
     })
 
     return list
-  }, [document.ingredientSets, allIngredients])
+  }, [ingredientSets, allIngredients])
 
   // 6. Called by the Sanity form-builder when this input should receive focus
   // focus = () => {
@@ -153,7 +155,7 @@ const IngredientPicker = React.forwardRef((props, ref) => {
   )
 })
 
-export default withDocument(IngredientPicker)
+export default IngredientPicker
 
 // Shoosh, eslint
 IngredientPicker.displayName = 'IngredientPicker'

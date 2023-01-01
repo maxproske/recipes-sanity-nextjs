@@ -1,4 +1,3 @@
-import S from '@sanity/desk-tool/structure-builder'
 import Iframe from 'sanity-plugin-iframe-pane'
 
 import resolveProductionUrl from '../resolveProductionUrl'

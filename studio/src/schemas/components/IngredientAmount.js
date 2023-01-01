@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { withDocument } from 'part:@sanity/form-builder'
+import { useFormValue } from 'sanity'
 
 // Important items to allow form fields to work properly and patch the dataset.
-import FormField from 'part:@sanity/components/formfields/default'
-import PatchEvent, { set, unset } from 'part:@sanity/form-builder/patch-event'
+import { FormField } from '@sanity/base/components'
+import PatchEvent, {set, unset} from '@sanity/form-builder/PatchEvent'
 
 import { TextInput, Flex, Label, Select } from '@sanity/ui'
 import { options, units, unitDropdown } from './amountSettings'
@@ -141,7 +141,7 @@ const IngredientAmount = React.forwardRef((props, ref) => {
   )
 })
 
-export default withDocument(IngredientAmount)
+export default IngredientAmount
 
 IngredientAmount.displayName = 'IngredientAmount'
 

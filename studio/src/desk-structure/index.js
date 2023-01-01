@@ -1,4 +1,3 @@
-import S from '@sanity/desk-tool/structure-builder'
 import { FiBook, FiBookmark, FiSettings, FiTag } from 'react-icons/fi'
 import preview from './preview'
 
@@ -18,7 +17,7 @@ export const getDefaultDocumentNode = ({ schemaType }) => {
   return S.document()
 }
 
-export default () =>
+export default (S) =>
   S.list()
     .title('Site')
     .items([
