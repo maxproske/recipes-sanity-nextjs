@@ -24,7 +24,7 @@ export const useStore = create((set) => ({
   changeStandard: (standard) => set(() => ({ standard })),
 
   // Temperatures
-  temperature: temperatureOptions[0].value,
+  temperature: temperatureOptions[1].value,
   temperatureOptions,
   changeTemperature: (temperature) => set(() => ({ temperature })),
 }))
