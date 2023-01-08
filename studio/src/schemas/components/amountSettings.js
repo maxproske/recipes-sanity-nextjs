@@ -36,7 +36,7 @@ export const units = {
     type: 'Weight',
     standard: 'Imperial',
   },
-  pt: {
+  pnt: {
     single: 'Pint',
     plural: 'Pints',
     type: 'Volume',

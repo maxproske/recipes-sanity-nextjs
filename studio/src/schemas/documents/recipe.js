@@ -71,41 +71,41 @@ export default {
     ]).toObject,
     qFB('method', 'array').children([
       // Title
-      {
-        ...qF('title', 'object'),
-        fields: [qF('title', 'string')],
-        icon: FiType,
-        preview: {
-          select: {
-            title: 'title',
-          },
-          prepare(selection) {
-            const { title } = selection
-            return {
-              title,
-              subtitle: 'Title',
-            }
-          },
-        },
-      },
+      // {
+      //   ...qF('title', 'object'),
+      //   fields: [qF('title', 'string')],
+      //   icon: FiType,
+      //   preview: {
+      //     select: {
+      //       title: 'title',
+      //     },
+      //     prepare(selection) {
+      //       const { title } = selection
+      //       return {
+      //         title,
+      //         subtitle: 'Title',
+      //       }
+      //     },
+      //   },
+      // },
       // Text directions
-      {
-        ...qF('step', 'object'),
-        fields: [qF('step', 'portableText')],
-        icon: FiList,
-        preview: {
-          select: {
-            step: 'step',
-          },
-          prepare(selection) {
-            const { step } = selection
-            return {
-              title: toPlainText(step),
-              subtitle: 'Step',
-            }
-          },
-        },
-      },
+      // {
+      //   ...qF('step', 'object'),
+      //   fields: [qF('step', 'portableText')],
+      //   icon: FiList,
+      //   preview: {
+      //     select: {
+      //       step: 'step',
+      //     },
+      //     prepare(selection) {
+      //       const { step } = selection
+      //       return {
+      //         title: toPlainText(step),
+      //         subtitle: 'Step',
+      //       }
+      //     },
+      //   },
+      // },
       // Component directions
       {
         ...qF('component', 'object'),
