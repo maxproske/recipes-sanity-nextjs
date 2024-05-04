@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import Amount from '../Ingredient/Amount'
-import {PortableText} from '../../lib/sanity'
+import { PortableText } from '../../lib/sanity'
 import Count from './Count'
 
 function Component({ step, count, allIngredients }) {
@@ -9,7 +9,7 @@ function Component({ step, count, allIngredients }) {
   const ingredientsParsed = useMemo(() => {
     try {
       return JSON.parse(ingredients)
-    } catch(e) {
+    } catch (e) {
       return null
     }
   }, [])

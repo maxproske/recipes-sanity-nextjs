@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Count from './Count'
-import {PortableText} from '../../lib/sanity'
+import { PortableText } from '../../lib/sanity'
 
 function Step({ step, count }) {
   return (

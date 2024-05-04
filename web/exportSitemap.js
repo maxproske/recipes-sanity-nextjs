@@ -1,6 +1,6 @@
 const sm = require('sitemap')
 const fs = require('fs')
-const {sanityClient} = require('./lib/sanity.server.js')
+const { sanityClient } = require('./lib/sanity.server.js')
 
 const query = `
 {
