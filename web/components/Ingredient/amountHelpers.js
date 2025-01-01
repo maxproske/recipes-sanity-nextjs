@@ -52,8 +52,8 @@ export function valueFraction(value) {
       break
   }
 
-  // Remove any leading zero
-  if (withFraction && withFraction.startsWith('0')) {
+  // Get rid of any leading zero
+  if (withFraction && withFraction[0] === '0') {
     withFraction = withFraction.slice(1)
   }
 
