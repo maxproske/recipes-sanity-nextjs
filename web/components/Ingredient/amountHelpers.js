@@ -23,7 +23,9 @@ export function convertCups(value, cupInGrams, cup, standard) {
 export function valueFraction(value) {
   let withFraction
 
-  const valueString = value.toFixed(3)
+  // Truncate to 3 decimal places instead of rounding
+  const truncatedValue = Math.floor(value * 1000) / 1000
+  const valueString = truncatedValue.toFixed(3)
   const amountEnd = valueString.split('.').pop()
 
   switch (amountEnd) {
@@ -45,14 +47,13 @@ export function valueFraction(value) {
     case '750':
       withFraction = valueString.replace('.750', `¾`)
       break
-
     default:
       withFraction = value
       break
   }
 
-  // Get rid of any leading zero
-  if (withFraction && withFraction[0] === '0') {
+  // Remove any leading zero
+  if (withFraction && withFraction.startsWith('0')) {
     withFraction = withFraction.slice(1)
   }
 
