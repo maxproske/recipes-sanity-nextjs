@@ -9,3 +9,6 @@
 
 .vercel
 .env
+
+# Local backup files
+*.tar.gz

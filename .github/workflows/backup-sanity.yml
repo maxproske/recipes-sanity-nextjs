@@ -1,0 +1,74 @@
+name: Daily Sanity Backup
+
+on:
+  schedule:
+    - cron: '0 4 * * 0' # 04:00 UTC every Sunday
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Install Sanity CLI
+        run: npm install -g sanity
+
+      - name: Export dataset
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+        run: |
+          sanity dataset export production backup.tar.gz \
+            -p ${{ secrets.SANITY_PROJECT_ID }} \
+            --token "$SANITY_AUTH_TOKEN"
+
+      - name: Verify export
+        run: |
+          if [ ! -f backup.tar.gz ]; then
+            echo "ERROR: backup.tar.gz not created"
+            exit 1
+          fi
+          FILE_SIZE=$(stat --format=%s backup.tar.gz)
+          echo "Backup size: $FILE_SIZE bytes"
+          if [ "$FILE_SIZE" -lt 1000 ]; then
+            echo "ERROR: Backup suspiciously small ($FILE_SIZE bytes)"
+            exit 1
+          fi
+          echo "BACKUP_SIZE=$FILE_SIZE" >> $GITHUB_ENV
+
+      - name: Generate metadata
+        id: meta
+        run: |
+          echo "date=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+          echo "timestamp=$(date +%Y%m%d-%H%M%S)" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: backup-${{ steps.meta.outputs.timestamp }}
+          name: "Sanity Backup ${{ steps.meta.outputs.date }}"
+          body: |
+            Automated daily backup of Sanity dataset `production`.
+            **Size:** ${{ env.BACKUP_SIZE }} bytes
+
+            ## Restore
+            ```
+            cd studio
+            npx sanity dataset import /path/to/backup.tar.gz production --replace
+            ```
+          files: backup.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up old backups (keep 6 weeks to stay under 2GB)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CUTOFF_DATE=$(date -d '42 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          gh release list --repo ${{ github.repository }} --limit 200 \
+            --json tagName,createdAt \
+            --jq ".[] | select(.tagName | startswith(\"backup-\")) | select(.createdAt < \"$CUTOFF_DATE\") | .tagName" \
+          | while read -r tag; do
+              echo "Deleting old backup: $tag"
+              gh release delete "$tag" --repo ${{ github.repository }} --yes --cleanup-tag
+            done
