@@ -2,7 +2,7 @@ export default async function preview(req, res) {
   const corsOrigin =
     process.env.NODE_ENV === 'development'
       ? `http://localhost:3333`
-      : `https://recipe.sanity.studio`
+      : `https://proske-cookbook.sanity.studio`
 
   res.setHeader('Access-Control-Allow-Origin', corsOrigin)
   res.setHeader('Access-Control-Allow-Credentials', true)
