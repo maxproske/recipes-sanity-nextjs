@@ -15,7 +15,7 @@ module.exports = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' https://*.sanity.io https://www.sanity.io",
+            value: "frame-ancestors 'self' https://*.sanity.io https://*.sanity.studio",
           },
           {
             key: 'X-Content-Type-Options',
