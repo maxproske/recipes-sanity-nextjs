@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { useStore } from '../hooks/useStore'
 
-const convert = require('convert-units')
+import convert from 'convert-units'
 
 function Temperature({ temperature, measurement }) {
   const temperatureControl = useStore((state) => state.temperature)

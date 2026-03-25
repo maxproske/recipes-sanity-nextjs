@@ -4,7 +4,7 @@ import Image from 'next/image'
 import groq from 'groq'
 import { NextSeo } from 'next-seo'
 
-import { urlFor, usePreviewSubscription } from '../lib/sanity'
+import { urlFor } from '../lib/sanity'
 import { filterDataToSingleItem } from '../lib/filterDataToSingleItem'
 import { getClient } from '../lib/sanity.server'
 import { recipeQuery } from '../lib/queries'
@@ -21,16 +21,7 @@ const featuredImageSize = {
   height: 600,
 }
 export default function Recipe({ data, preview }) {
-  const { data: previewData } = usePreviewSubscription(data?.query, {
-    params: data?.queryParams ?? {},
-    // The hook needs to know what we started with, to return it immediately
-    // This is what it's important to fetch draft content server-side!
-    initialData: data.page,
-    // The passed-down preview context determines whether this function does anything
-    enabled: preview,
-  })
-
-  const page = filterDataToSingleItem(previewData, preview)
+  const page = data.page
 
   const {
     title,
@@ -43,10 +34,12 @@ export default function Recipe({ data, preview }) {
 
   const featuredImageUrl = useMemo(
     () =>
-      urlFor(featuredImage)
-        .width(featuredImageSize.width)
-        .height(featuredImageSize.height)
-        .url(),
+      featuredImage
+        ? urlFor(featuredImage)
+            .width(featuredImageSize.width)
+            .height(featuredImageSize.height)
+            .url()
+        : null,
     [featuredImage]
   )
 
@@ -95,15 +88,9 @@ export async function getStaticProps({ params, preview = false }) {
 
   return {
     props: {
-      // Pass-down the preview context
       preview,
-      // Pass-down the initial content, and our query
       data: {
         page: page ?? null,
-        query: preview ? recipeQuery : null,
-        // query: recipeQuery,
-        queryParams: preview ? recipeParams : null,
-        // queryParams: recipeParams,
       },
     },
     revalidate: 60,

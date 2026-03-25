@@ -16,10 +16,12 @@ function RecipeCard({ recipe }) {
 
   const featuredImageUrl = useMemo(
     () =>
-      urlFor(featuredImage)
-        .width(featuredImageSize.width)
-        .height(featuredImageSize.height)
-        .url(),
+      featuredImage
+        ? urlFor(featuredImage)
+            .width(featuredImageSize.width)
+            .height(featuredImageSize.height)
+            .url()
+        : null,
     [featuredImage]
   )
   return (
@@ -42,10 +44,8 @@ function RecipeCard({ recipe }) {
         <span className="absolute inset-0 m-2 md:m-4 border border-caramel-200 pointer-events-none" />
         <Heading>
           <Link href={slug?.current ?? ''}>
-            <a>
               {title}
               <span className="absolute inset-0" />
-            </a>
           </Link>
         </Heading>
         {category?.title && (

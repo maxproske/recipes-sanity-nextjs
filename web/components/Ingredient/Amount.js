@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Portal } from 'react-portal'
-import { InformationCircleSolid } from '@graywolfai/react-heroicons'
+import { InformationCircleIcon } from '@heroicons/react/20/solid'
 
 import { units } from '../../../studio/src/schemas/components/amountSettings'
 import { useStore } from '../../hooks/useStore'
@@ -165,7 +165,7 @@ function Amount({ ingredient, dot }) {
             onClick={() => setOpenModal(true)}
           >
             <span className="absolute inset-0" />
-            <InformationCircleSolid className="w-4 h-auto text-caramel-500" />
+            <InformationCircleIcon className="w-4 h-auto text-caramel-500" />
           </button>
           {openModal && (
             <Portal>

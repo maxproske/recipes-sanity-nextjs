@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlusSmSolid, MinusSmSolid } from '@graywolfai/react-heroicons'
+import { PlusIcon, MinusIcon } from '@heroicons/react/20/solid'
 
 import { useStore } from '../../hooks/useStore'
 
@@ -14,14 +14,14 @@ function Serves() {
       classes: `${buttonClasses} ${
         serves <= 0.5 ? `opacity-25 pointer-events-none` : ``
       }`,
-      icon: <MinusSmSolid className="w-5 h-auto" />,
+      icon: <MinusIcon className="w-5 h-auto" />,
       sr: `One Less Serve`,
     },
     {
       increment: serves === 0.5 ? +0.5 : 1,
       disabled: false,
       classes: buttonClasses,
-      icon: <PlusSmSolid className="w-5 h-auto" />,
+      icon: <PlusIcon className="w-5 h-auto" />,
       sr: `One More Serve`,
     },
   ]

@@ -1,8 +1,10 @@
 module.exports = {
   images: {
-    domains: ['cdn.sanity.io'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
+    ],
   },
-  //  future: {
-  //   webpack5: true,
-  // },
 }

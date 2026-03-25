@@ -41,20 +41,6 @@
     "prettier": "^2.2.1"
   },
   "eslintConfig": {
-    "extends": [
-      "wesbos"
-    ],
-    "rules": {
-      "no-console": 2,
-      "prettier/prettier": [
-        "error",
-        {
-          "trailingComma": "es5",
-          "singleQuote": true,
-          "printWidth": 80,
-          "semi": false
-        }
-      ]
-    }
+    "root": true
   }
 }

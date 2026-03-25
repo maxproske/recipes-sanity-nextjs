@@ -15,10 +15,8 @@ export default function NotFound() {
             Sorry, we couldn&apos;t find that recipe. It may have been moved or
             doesn&apos;t exist.
           </p>
-          <Link href="/">
-            <a className="text-caramel-800 underline hover:text-caramel-600 font-display uppercase tracking-widest text-sm">
+          <Link href="/" className="text-caramel-800 underline hover:text-caramel-600 font-display uppercase tracking-widest text-sm">
               Back to all recipes
-            </a>
           </Link>
         </div>
       </main>

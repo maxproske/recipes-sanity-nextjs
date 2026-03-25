@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ChevronDownSolid } from '@graywolfai/react-heroicons'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 import { useStore } from '../../hooks/useStore'
 import Toggle from './Toggle'
@@ -42,7 +42,7 @@ function Controls() {
           `}
         >
           {showToggles ? `Hide` : `Show`} Controls
-          <ChevronDownSolid
+          <ChevronDownIcon
             className={`${
               showToggles ? `rotate-180` : ``
             } transform  w-4 h-auto`}

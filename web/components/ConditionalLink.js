@@ -20,33 +20,6 @@ function testHref(href) {
   }
 }
 
-// eslint-disable-next-line react/display-name
-const Anchor = React.forwardRef(
-  ({ onClick, href, className, children }, ref) => (
-    <a
-      href={href}
-      onClick={onClick || undefined}
-      ref={ref}
-      className={className}
-    >
-      {children}
-    </a>
-  )
-)
-
-Anchor.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
-  className: PropTypes.string,
-  href: PropTypes.string,
-  onClick: PropTypes.func,
-}
-
-Anchor.defaultProps = {
-  className: ``,
-  href: ``,
-  onClick: undefined,
-}
-
 export default function ConditionalLink({
   href,
   children,
@@ -72,19 +45,12 @@ export default function ConditionalLink({
   if (!path) return null
 
   return (
-    <Link href={path ?? ''} passHref>
-      {onClick ? (
-        <Anchor
-          onClick={onClick}
-          className={`${className} ${path === asPath ? `active` : ``}`}
-        >
-          {children}
-        </Anchor>
-      ) : (
-        <a className={`${className} ${path === asPath ? `active` : ``}`}>
-          {children}
-        </a>
-      )}
+    <Link
+      href={path ?? ''}
+      onClick={onClick}
+      className={`${className} ${path === asPath ? `active` : ``}`}
+    >
+      {children}
     </Link>
   )
 }
@@ -94,9 +60,4 @@ ConditionalLink.propTypes = {
   className: PropTypes.string,
   href: PropTypes.string.isRequired,
   onClick: PropTypes.func,
-}
-
-ConditionalLink.defaultProps = {
-  className: ``,
-  onClick: undefined,
 }

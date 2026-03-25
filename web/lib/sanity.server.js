@@ -1,4 +1,4 @@
-import { createClient } from 'next-sanity'
+import { createClient } from '@sanity/client'
 import { config } from './config'
 
 // Set up the client for fetching data in the getProps page functions
