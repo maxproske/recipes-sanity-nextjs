@@ -10,14 +10,14 @@
   },
   "dependencies": {
     "@sanity/ui": "^2",
-    "@sanity/vision": "^3",
+    "@sanity/vision": "^5",
     "bcp47": "^1.1.2",
     "convert-units": "^2.3.4",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19",
+    "react-dom": "^19",
     "react-icons": "^4.3.1",
-    "sanity": "^3",
-    "sanity-plugin-iframe-pane": "^3",
-    "styled-components": "^6"
+    "sanity": "^5",
+    "sanity-plugin-iframe-pane": "^5",
+    "styled-components": "^6.1"
   }
 }

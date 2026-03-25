@@ -1,26 +1,18 @@
-import React from 'react'
+import { defineType, defineField } from 'sanity'
 
-const TemperatureRender = ({ children, value }) => (
-  <span style={{ backgroundColor: 'yellow' }}>
-    {value?.temperature || children}
-    {value?.measurement === 'celsius' ? 'ºC' : ''}
-    {value?.measurement === 'fahrenheit' ? 'ºF' : ''}
-  </span>
-)
-
-export default {
+export default defineType({
   title: 'Temperature',
   name: 'temperature',
   type: 'object',
   description: 'Will convert from ºC to ºF on the front-end',
   icon: () => 'ºC/F',
   fields: [
-    {
+    defineField({
       name: 'temperature',
       title: 'Temperature',
       type: 'number',
-    },
-    {
+    }),
+    defineField({
       name: 'measurement',
       title: 'Measurement',
       type: 'string',
@@ -32,6 +24,6 @@ export default {
         layout: 'radio',
         direction: 'horizontal',
       },
-    },
+    }),
   ],
-}
+})

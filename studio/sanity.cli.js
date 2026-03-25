@@ -6,4 +6,7 @@ export default defineCliConfig({
     dataset: 'production',
   },
   studioHost: 'proske-cookbook',
+  deployment: {
+    appId: 'c8c1a43fab9eb0095149bc69',
+  },
 })
