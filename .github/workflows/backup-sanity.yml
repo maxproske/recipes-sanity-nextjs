@@ -19,8 +19,7 @@ jobs:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
         run: |
           sanity dataset export production backup.tar.gz \
-            -p ${{ secrets.SANITY_PROJECT_ID }} \
-            --token "$SANITY_AUTH_TOKEN"
+            -p ${{ secrets.SANITY_PROJECT_ID }}
 
       - name: Verify export
         run: |
