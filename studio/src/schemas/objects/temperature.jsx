@@ -1,10 +1,10 @@
 import React from 'react'
 
-const TemperatureRender = ({ children, temperature, measurement }) => (
+const TemperatureRender = ({ children, value }) => (
   <span style={{ backgroundColor: 'yellow' }}>
-    {temperature || children}
-    {measurement === 'celsius' ? 'ºC' : ''}
-    {measurement === 'fahrenheit' ? 'ºF' : ''}
+    {value?.temperature || children}
+    {value?.measurement === 'celsius' ? 'ºC' : ''}
+    {value?.measurement === 'fahrenheit' ? 'ºF' : ''}
   </span>
 )
 
@@ -14,9 +14,6 @@ export default {
   type: 'object',
   description: 'Will convert from ºC to ºF on the front-end',
   icon: () => 'ºC/F',
-  components: {
-    annotation: TemperatureRender,
-  },
   fields: [
     {
       name: 'temperature',

@@ -7,9 +7,6 @@ export default {
   name: 'link',
   type: 'object',
   icon: () => '🌍',
-  components: {
-    annotation: LinkRender,
-  },
   fields: [
     {
       title: 'URL',
