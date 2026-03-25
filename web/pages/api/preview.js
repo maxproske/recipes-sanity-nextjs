@@ -2,7 +2,7 @@ export default async function preview(req, res) {
   const corsOrigin =
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:3333'
-      : process.env.SANITY_STUDIO_URL || 'https://proske-cookbook.sanity.studio'
+      : process.env.SANITY_STUDIO_URL || 'https://www.sanity.io'
 
   res.setHeader('Access-Control-Allow-Origin', corsOrigin)
   res.setHeader('Access-Control-Allow-Credentials', 'true')
@@ -35,8 +35,5 @@ export default async function preview(req, res) {
   })
 
   const pathname = req.query.slug
-  res.writeHead(307, {
-    Location: pathname.startsWith('/') ? pathname : `/${pathname}`,
-  })
-  res.end()
+  res.redirect(307, pathname.startsWith('/') ? pathname : `/${pathname}`)
 }
