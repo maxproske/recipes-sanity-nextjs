@@ -9,7 +9,7 @@
     "start": "sanity start"
   },
   "dependencies": {
-    "@sanity/ui": "^2",
+    "@sanity/ui": "^3",
     "@sanity/vision": "^5",
     "bcp47": "^1.1.2",
     "convert-units": "^2.3.4",

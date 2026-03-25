@@ -37,6 +37,7 @@ function RecipeCard({ recipe }) {
             alt={title}
             width={featuredImageSize.width}
             height={featuredImageSize.height}
+            sizes="(max-width: 768px) 100vw, 33vw"
           />
         </figure>
       )}

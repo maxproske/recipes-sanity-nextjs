@@ -1,3 +1,7 @@
 .label {
-  @apply uppercase font-display font-black text-2xs tracking-mega;
+  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: var(--font-size-2xs);
+  letter-spacing: var(--letter-spacing-mega);
 }

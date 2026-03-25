@@ -1,14 +1,26 @@
-@import "tailwindcss/base";
+@import "tailwindcss";
 
-@import "partials/fonts.css";
-@import "partials/global.css";
-@import "partials/prose.css";
-@import "partials/banner.css";
-@import "partials/label.css";
+@theme {
+  --color-caramel-100: #fbf7f4;
+  --color-caramel-200: #e9d4c3;
+  --color-caramel-300: #d6b599;
+  --color-caramel-400: #bf926e;
+  --color-caramel-500: #a2744e;
+  --color-caramel-600: #835b3a;
+  --color-caramel-700: #664429;
+  --color-caramel-800: #472e1a;
+  --color-caramel-900: #26180d;
 
-/* @import "partials/buttons.css"; */
-/* @import "partials/forms.css"; */
-/* @import "partials/container.css"; */
+  --font-serif: "Domaine", ui-serif, Georgia, Cambria, "Times New Roman", Times,
+    serif;
+  --font-display: "Brandon Grotesque", ui-sans-serif, system-ui, sans-serif;
 
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+  --font-size-2xs: 0.625rem;
+  --letter-spacing-mega: 0.33em;
+}
+
+@import "./partials/fonts.css";
+@import "./partials/global.css";
+@import "./partials/prose.css";
+@import "./partials/banner.css";
+@import "./partials/label.css";

@@ -14,6 +14,9 @@ export const recipeQuery = groq`
 }`
 
 export const allRecipesQuery = groq`*[_type == "recipe"] | order(_createdAt desc) {
-  ...,
+  _id,
+  title,
+  slug,
+  featuredImage,
   category->
 }`

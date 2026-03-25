@@ -62,6 +62,8 @@ export default function Recipe({ data, preview }) {
                 alt={title}
                 width={featuredImageSize.width}
                 height={featuredImageSize.height}
+                priority
+                sizes="(max-width: 1024px) 100vw, 896px"
               />
             </figure>
           )}

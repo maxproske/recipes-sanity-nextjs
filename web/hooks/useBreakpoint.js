@@ -1,53 +1,35 @@
-import { useState, useEffect } from 'react'
-import resolveConfig from 'tailwindcss/resolveConfig'
-import throttle from 'lodash.throttle'
-import tailwindConfig from '../tailwind.config.js'
+import { useState, useEffect } from "react";
+import throttle from "lodash.throttle";
 
-const findKeyByValue = (object, value) =>
-  Object.keys(object).find((key) => object[key] === value)
+const screens = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  "2xl": 1536,
+};
 
 const getDeviceConfig = (width) => {
-  const fullConfig = resolveConfig(tailwindConfig)
-  const { screens } = fullConfig.theme
-
-  const bpSizes = Object.keys(screens).map((screenSize) =>
-    parseInt(screens[screenSize])
-  )
-
-  const bpShapes = bpSizes.map((size, index) => ({
-    min: !index ? 0 : bpSizes[index - 1],
-    max: size,
-    key: findKeyByValue(screens, `${size}px`),
-  }))
-
-  let breakpoint = null
-
-  bpShapes.forEach((shape) => {
-    if (!shape.min && width < shape.max) {
-      breakpoint = shape.key
-    } else if (width >= shape.min && width < shape.max) {
-      breakpoint = shape.key
-    } else if (!shape.max && width >= shape.max) {
-      breakpoint = shape.key
-    }
-  })
-
-  return breakpoint
-}
+  if (width < screens.sm) return "sm";
+  if (width < screens.md) return "md";
+  if (width < screens.lg) return "lg";
+  if (width < screens.xl) return "xl";
+  return "2xl";
+};
 
 const useBreakpoint = () => {
-  const width = typeof window !== 'undefined' ? window.innerWidth : 0
-
-  const [brkPnt, setBrkPnt] = useState(() => getDeviceConfig(width))
+  const [brkPnt, setBrkPnt] = useState(() =>
+    typeof window !== "undefined" ? getDeviceConfig(window.innerWidth) : "sm"
+  );
 
   useEffect(() => {
     const calcInnerWidth = throttle(function () {
-      setBrkPnt(getDeviceConfig(width))
-    }, 200)
-    window.addEventListener('resize', calcInnerWidth)
-    return () => window.removeEventListener('resize', calcInnerWidth)
-  }, [])
+      setBrkPnt(getDeviceConfig(window.innerWidth));
+    }, 200);
+    window.addEventListener("resize", calcInnerWidth);
+    return () => window.removeEventListener("resize", calcInnerWidth);
+  }, []);
 
-  return brkPnt
-}
-export default useBreakpoint
+  return brkPnt;
+};
+export default useBreakpoint;

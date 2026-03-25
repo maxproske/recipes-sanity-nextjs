@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import { NextSeo } from 'next-seo'
-import Image from 'next/image'
-import Head from 'next/head'
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { NextSeo } from "next-seo";
+import Image from "next/image";
+import Head from "next/head";
 
-import Layout from '../components/Layout'
-import Heading from '../components/Heading'
-import RecipeCard from '../components/RecipeCard'
-import { getClient } from '../lib/sanity.server'
-import { allRecipesQuery } from '../lib/queries'
+import Layout from "../components/Layout";
+import Heading from "../components/Heading";
+import RecipeCard from "../components/RecipeCard";
+import { getClient } from "../lib/sanity.server";
+import { allRecipesQuery } from "../lib/queries";
 
 export default function Home({ recipeList }) {
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredRecipes = recipeList.filter((recipe) =>
     recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  );
 
   return (
     <Layout>
@@ -30,7 +30,7 @@ export default function Home({ recipeList }) {
             placeholder="Search recipes..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full mb-10 px-4 py-2 border border-caramel-300 rounded-md shadow-sm focus:outline-none focus:border-caramel-500 transition duration-150 ease-in-out placeholder-caramel-400"
+            className="w-full mb-10 px-4 py-2 border border-caramel-300 rounded-md shadow-xs focus:outline-hidden focus:border-caramel-500 transition duration-150 ease-in-out placeholder-caramel-400"
           />
 
           <div className="flex justify-center items-center">
@@ -40,6 +40,7 @@ export default function Home({ recipeList }) {
                 height="360"
                 width="360"
                 alt="Logo"
+                priority
               />
             </div>
             <div>
@@ -61,18 +62,18 @@ export default function Home({ recipeList }) {
         </div>
       </main>
     </Layout>
-  )
+  );
 }
 
 Home.propTypes = {
   recipeList: PropTypes.array,
-}
+};
 
 export async function getStaticProps({ params, preview }) {
-  const recipeList = await getClient(preview).fetch(allRecipesQuery)
+  const recipeList = await getClient(preview).fetch(allRecipesQuery);
 
   return {
     props: { recipeList },
     revalidate: 60,
-  }
+  };
 }
