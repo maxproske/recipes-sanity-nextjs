@@ -1,6 +1,6 @@
 import sanityClient from 'part:@sanity/base/client'
 
-const previewSecret = `bji1nexeor5cuxtpqqexw3wnp7rdzo6d9nuqakjrckostkod`
+const previewSecret = process.env.SANITY_STUDIO_PREVIEW_SECRET
 // enable demo on the same Vercel or Netlify host, no matter what it is
 const remoteUrl = `https://recipes.mproske.com`
 const localUrl = `http://localhost:3000`
