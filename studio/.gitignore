@@ -3,3 +3,4 @@
 /.sanity
 .env
 .env.*
+studio/schema.json
