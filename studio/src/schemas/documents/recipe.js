@@ -1,5 +1,4 @@
-import { FiType, FiList, FiGrid, FiBox, FiDroplet } from 'react-icons/fi'
-import { qF, qFB } from 'sanity-quick-fields'
+import { FiGrid, FiBox, FiDroplet } from 'react-icons/fi'
 import { units } from '../components/amountSettings'
 
 function toPlainText(blocks = []) {
@@ -14,121 +13,160 @@ function toPlainText(blocks = []) {
 }
 
 export default {
-  ...qF('recipe', 'document'),
+  name: 'recipe',
+  title: 'Recipe',
+  type: 'document',
   fields: [
-    qF('title'),
-    qF('slug', 'slug', { source: 'title' }),
-    qF('description', 'text', { rows: 3 }),
-    qF('featuredImage', 'image'),
-    // qF('published', 'date'),
-    qF('category', 'reference', { to: { type: 'category' } }),
-    qFB('ingredientSets', 'array').children([
-      qFB('set', 'object', { icon: FiBox }).children([
-        qF('title'),
-        qFB('ingredients', 'array').children([
-          {
-            name: 'ingredient',
-            title: 'Ingredient',
-            type: 'object',
-            fields: [
-              qF('amount', 'ingredientAmount'),
-              qF('ingredient', 'reference', { to: { type: 'ingredient' } }),
-              qF('note'),
-            ],
-            icon: FiDroplet,
-            preview: {
-              select: {
-                ingredient: 'ingredient.title',
-                amount: 'amount.value',
-                unit: 'amount.unit',
-                note: 'note',
-              },
-              prepare(selection) {
-                const { ingredient, amount, unit, note } = selection
+    {
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+    },
+    {
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: { source: 'title' },
+    },
+    {
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 3,
+    },
+    {
+      name: 'featuredImage',
+      title: 'Featured Image',
+      type: 'image',
+    },
+    {
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{ type: 'category' }],
+    },
+    {
+      name: 'ingredientSets',
+      title: 'Ingredient Sets',
+      type: 'array',
+      of: [
+        {
+          name: 'set',
+          title: 'Set',
+          type: 'object',
+          icon: FiBox,
+          fields: [
+            {
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+            },
+            {
+              name: 'ingredients',
+              title: 'Ingredients',
+              type: 'array',
+              of: [
+                {
+                  name: 'ingredient',
+                  title: 'Ingredient',
+                  type: 'object',
+                  fields: [
+                    {
+                      name: 'amount',
+                      title: 'Amount',
+                      type: 'ingredientAmount',
+                    },
+                    {
+                      name: 'ingredient',
+                      title: 'Ingredient',
+                      type: 'reference',
+                      to: [{ type: 'ingredient' }],
+                    },
+                    {
+                      name: 'note',
+                      title: 'Note',
+                      type: 'string',
+                    },
+                  ],
+                  icon: FiDroplet,
+                  preview: {
+                    select: {
+                      ingredient: 'ingredient.title',
+                      amount: 'amount.value',
+                      unit: 'amount.unit',
+                      note: 'note',
+                    },
+                    prepare(selection) {
+                      const { ingredient, amount, unit, note } = selection
 
-                if (!amount && !unit) {
-                  return {
-                    title: ingredient,
-                  }
-                }
+                      if (!amount && !unit) {
+                        return {
+                          title: ingredient,
+                        }
+                      }
 
-                const unitLabel =
-                  amount !== 1 && units[unit].plural
-                    ? units[unit].plural
-                    : units[unit].single
+                      const unitLabel =
+                        amount !== 1 && units[unit]?.plural
+                          ? units[unit].plural
+                          : units[unit]?.single
 
-                return {
-                  title: ingredient,
-                  subtitle: [amount, unitLabel, note ? `– ${note}` : '']
-                    .join(' ')
-                    .trim(),
-                }
-              },
+                      return {
+                        title: ingredient,
+                        subtitle: [amount, unitLabel, note ? `– ${note}` : '']
+                          .join(' ')
+                          .trim(),
+                      }
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'method',
+      title: 'Method',
+      type: 'array',
+      of: [
+        {
+          name: 'component',
+          title: 'Component',
+          type: 'object',
+          fields: [
+            {
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+            },
+            {
+              name: 'ingredients',
+              title: 'Ingredients',
+              type: 'ingredientPicker',
+            },
+            {
+              name: 'description',
+              title: 'Description',
+              type: 'portableText',
+            },
+          ],
+          icon: FiGrid,
+          preview: {
+            select: {
+              description: 'description',
+            },
+            prepare(selection) {
+              const { description } = selection
+              return {
+                title: toPlainText(description),
+                subtitle: 'Component',
+              }
             },
           },
-        ]).toObject,
-      ]),
-    ]).toObject,
-    qFB('method', 'array').children([
-      // Title
-      // {
-      //   ...qF('title', 'object'),
-      //   fields: [qF('title', 'string')],
-      //   icon: FiType,
-      //   preview: {
-      //     select: {
-      //       title: 'title',
-      //     },
-      //     prepare(selection) {
-      //       const { title } = selection
-      //       return {
-      //         title,
-      //         subtitle: 'Title',
-      //       }
-      //     },
-      //   },
-      // },
-      // Text directions
-      // {
-      //   ...qF('step', 'object'),
-      //   fields: [qF('step', 'portableText')],
-      //   icon: FiList,
-      //   preview: {
-      //     select: {
-      //       step: 'step',
-      //     },
-      //     prepare(selection) {
-      //       const { step } = selection
-      //       return {
-      //         title: toPlainText(step),
-      //         subtitle: 'Step',
-      //       }
-      //     },
-      //   },
-      // },
-      // Component directions
-      {
-        ...qF('component', 'object'),
-        fields: [
-          qF('title'),
-          qF('ingredients', 'ingredientPicker'),
-          qF('description', 'portableText'),
-        ],
-        icon: FiGrid,
-        preview: {
-          select: {
-            description: 'description',
-          },
-          prepare(selection) {
-            const { description } = selection
-            return {
-              title: toPlainText(description),
-              subtitle: 'Component',
-            }
-          },
         },
-      },
-    ]).toObject,
+      ],
+    },
   ],
   preview: {
     select: {
@@ -138,7 +176,6 @@ export default {
     },
     prepare(selection) {
       const { title, subtitle, media } = selection
-
       return {
         title,
         subtitle: `/${subtitle}`,

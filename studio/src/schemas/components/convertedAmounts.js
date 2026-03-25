@@ -1,6 +1,6 @@
 import { units } from './amountSettings'
 
-const convert = require('convert-units')
+import convert from 'convert-units'
 
 /**
  * Take base amount and return conversions

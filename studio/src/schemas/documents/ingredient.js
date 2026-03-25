@@ -1,19 +1,33 @@
 import { FiBookmark } from 'react-icons/fi'
-import { qF, qFB } from 'sanity-quick-fields'
 
 export default {
-  ...qF('ingredient', 'document'),
+  name: 'ingredient',
+  title: 'Ingredient',
+  type: 'document',
   icon: FiBookmark,
   fields: [
-    qF('title'),
-    qF('plural'),
     {
-      name: `cupInGrams`,
-      title: `1 Cup in Grams`,
-      type: `number`,
-      description: `1 Cup is 250mL`,
+      name: 'title',
+      title: 'Title',
+      type: 'string',
     },
-    qFB('alternativeNames', 'array').children([qF('title')]).toObject,
+    {
+      name: 'plural',
+      title: 'Plural',
+      type: 'string',
+    },
+    {
+      name: 'cupInGrams',
+      title: '1 Cup in Grams',
+      type: 'number',
+      description: '1 Cup is 250mL',
+    },
+    {
+      name: 'alternativeNames',
+      title: 'Alternative Names',
+      type: 'array',
+      of: [{ type: 'string' }],
+    },
   ],
   preview: {
     select: {

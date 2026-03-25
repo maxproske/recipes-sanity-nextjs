@@ -1,24 +1,29 @@
-import S from '@sanity/desk-tool/structure-builder'
 import { FiBook, FiBookmark, FiSettings, FiTag } from 'react-icons/fi'
-import preview from './preview'
+import { Iframe } from 'sanity-plugin-iframe-pane'
+import resolveProductionUrl from '../resolveProductionUrl'
 
-// We filter document types defined in structure to prevent
-// them from being listed twice
 const hiddenDocTypes = (listItem) =>
   !['site-config', 'recipe', 'ingredient', 'category'].includes(
     listItem.getId()
   )
 
-// Customise views on Documents that have S.documentTypeListItem's registered
-export const getDefaultDocumentNode = ({ schemaType }) => {
+export const defaultDocumentNode = (S, { schemaType }) => {
   if (schemaType === 'recipe') {
-    return S.document().views([S.view.form(), preview])
+    return S.document().views([
+      S.view.form(),
+      S.view
+        .component(Iframe)
+        .options({
+          url: (doc) => resolveProductionUrl(doc),
+          reload: { button: true },
+        })
+        .title('Preview'),
+    ])
   }
-
   return S.document()
 }
 
-export default () =>
+export const structure = (S) =>
   S.list()
     .title('Site')
     .items([
@@ -43,7 +48,7 @@ export default () =>
         .title('Settings')
         .icon(FiSettings)
         .child(
-          S.editor()
+          S.document()
             .id('config')
             .schemaType('site-config')
             .documentId('global-config')

@@ -1,21 +1,48 @@
-import { qF, qFB } from 'sanity-quick-fields'
-
-import IngredientAmount from '../components/IngredientAmount'
-
-const ingredientShape = [
-  qF('value', 'number'),
-  qF('unit'),
-  qF('standard'),
-  qF('type'),
-]
+import IngredientAmount from '../components/IngredientAmount.jsx'
 
 export default {
   name: 'ingredientAmount',
   title: 'Ingredient Amount',
   type: 'object',
-  inputComponent: IngredientAmount,
+  components: {
+    input: IngredientAmount,
+  },
   fields: [
-    ...ingredientShape,
-    qFB('amounts', 'array').children(ingredientShape).toObject,
+    {
+      name: 'value',
+      title: 'Value',
+      type: 'number',
+    },
+    {
+      name: 'unit',
+      title: 'Unit',
+      type: 'string',
+    },
+    {
+      name: 'standard',
+      title: 'Standard',
+      type: 'string',
+    },
+    {
+      name: 'type',
+      title: 'Type',
+      type: 'string',
+    },
+    {
+      name: 'amounts',
+      title: 'Amounts',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'value', title: 'Value', type: 'number' },
+            { name: 'unit', title: 'Unit', type: 'string' },
+            { name: 'standard', title: 'Standard', type: 'string' },
+            { name: 'type', title: 'Type', type: 'string' },
+          ],
+        },
+      ],
+    },
   ],
 }

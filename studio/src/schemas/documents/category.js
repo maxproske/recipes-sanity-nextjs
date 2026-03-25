@@ -1,10 +1,22 @@
 import { FiTag } from 'react-icons/fi'
-import { qF } from 'sanity-quick-fields'
 
 export default {
-  ...qF('category', 'document'),
+  name: 'category',
+  title: 'Category',
+  type: 'document',
   icon: FiTag,
-  fields: [qF('title'), qF('plural')],
+  fields: [
+    {
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+    },
+    {
+      name: 'plural',
+      title: 'Plural',
+      type: 'string',
+    },
+  ],
   preview: {
     select: {
       title: 'title',

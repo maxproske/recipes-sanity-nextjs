@@ -1,8 +1,10 @@
-import IngredientPicker from '../components/IngredientPicker'
+import IngredientPicker from '../components/IngredientPicker.jsx'
 
 export default {
   name: 'ingredientPicker',
   title: 'Ingredient Picker',
   type: 'string',
-  inputComponent: IngredientPicker,
+  components: {
+    input: IngredientPicker,
+  },
 }

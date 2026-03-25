@@ -6,6 +6,10 @@ export default {
   title: 'URL',
   name: 'link',
   type: 'object',
+  icon: () => '🌍',
+  components: {
+    annotation: LinkRender,
+  },
   fields: [
     {
       title: 'URL',
@@ -18,8 +22,4 @@ export default {
         }),
     },
   ],
-  blockEditor: {
-    icon: () => '🌍',
-    render: LinkRender,
-  },
 }
