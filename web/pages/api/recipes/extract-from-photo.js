@@ -11,7 +11,12 @@ import {
 } from "../../../lib/recipeExtraction/buildRecipeDraft";
 import { applyCors } from "../../../lib/recipeExtraction/cors";
 
-export const config = { api: { bodyParser: { sizeLimit: "12mb" } } };
+// gpt-5.5 vision typically takes 9–32s; default 10s timeout hits 504. 60s is
+// the cap on Vercel's Hobby/Pro serverless tier without Fluid Compute.
+export const config = {
+  api: { bodyParser: { sizeLimit: "12mb" } },
+  maxDuration: 60,
+};
 
 function titleCase(s) {
   return String(s || "")
