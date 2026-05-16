@@ -11,11 +11,13 @@ import {
 } from "../../../lib/recipeExtraction/buildRecipeDraft";
 import { applyCors } from "../../../lib/recipeExtraction/cors";
 
-// gpt-5.5 vision typically takes 9–32s; default 10s timeout hits 504. 60s is
-// the cap on Vercel's Hobby/Pro serverless tier without Fluid Compute.
+// gpt-5.5 vision typically takes 9–32s; default 10s timeout hits 504. Long
+// recipes occasionally push past 60s, which 504s before CORS headers are set
+// (so the Studio sees a CORS error instead of the timeout). 180s requires
+// Fluid Compute on Vercel Pro.
 export const config = {
   api: { bodyParser: { sizeLimit: "12mb" } },
-  maxDuration: 60,
+  maxDuration: 180,
 };
 
 function titleCase(s) {
