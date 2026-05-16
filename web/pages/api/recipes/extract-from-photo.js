@@ -127,7 +127,9 @@ export default async function handler(req, res) {
           title: created.title,
           created: true,
         });
-        warnings.push(`Created new ingredient: ${titleCase(name)}`);
+        // Intentionally not surfaced as a warning — auto-creating ingredients
+        // is normal behavior, not a problem. Real warnings (coverage issues,
+        // unexpected category, etc.) still bubble up.
       }
     }
 
