@@ -1,121 +1,133 @@
-import { FiGrid, FiBox, FiDroplet } from 'react-icons/fi'
-import { units } from '../components/amountSettings'
+import { FiGrid, FiBox, FiDroplet } from "react-icons/fi";
+import { units } from "../components/amountSettings";
+import AiImportField from "../components/AiImportField.jsx";
 
 function toPlainText(blocks = []) {
   return blocks
     .map((block) => {
-      if (block._type !== 'block' || !block.children) {
-        return ''
+      if (block._type !== "block" || !block.children) {
+        return "";
       }
-      return block.children.map((child) => child.text).join('')
+      return block.children.map((child) => child.text).join("");
     })
-    .join('\n\n')
+    .join("\n\n");
 }
 
 export default {
-  name: 'recipe',
-  title: 'Recipe',
-  type: 'document',
+  name: "recipe",
+  title: "Recipe",
+  type: "document",
   fields: [
     {
-      name: 'title',
-      title: 'Title',
-      type: 'string',
+      name: "aiImport",
+      title: "Create from photo",
+      type: "string",
+      readOnly: true,
+      components: {
+        // Hide the default field chrome — the input renders its own card.
+        field: (props) => props.children,
+        input: AiImportField,
+      },
     },
     {
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: { source: 'title' },
+      name: "title",
+      title: "Title",
+      type: "string",
     },
     {
-      name: 'description',
-      title: 'Description',
-      type: 'text',
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: { source: "title" },
+    },
+    {
+      name: "description",
+      title: "Description",
+      type: "text",
       rows: 3,
     },
     {
-      name: 'featuredImage',
-      title: 'Featured Image',
-      type: 'image',
+      name: "featuredImage",
+      title: "Featured Image",
+      type: "image",
     },
     {
-      name: 'category',
-      title: 'Category',
-      type: 'reference',
-      to: [{ type: 'category' }],
+      name: "category",
+      title: "Category",
+      type: "reference",
+      to: [{ type: "category" }],
     },
     {
-      name: 'ingredientSets',
-      title: 'Ingredient Sets',
-      type: 'array',
+      name: "ingredientSets",
+      title: "Ingredient Sets",
+      type: "array",
       of: [
         {
-          name: 'set',
-          title: 'Set',
-          type: 'object',
+          name: "set",
+          title: "Set",
+          type: "object",
           icon: FiBox,
           fields: [
             {
-              name: 'title',
-              title: 'Title',
-              type: 'string',
+              name: "title",
+              title: "Title",
+              type: "string",
             },
             {
-              name: 'ingredients',
-              title: 'Ingredients',
-              type: 'array',
+              name: "ingredients",
+              title: "Ingredients",
+              type: "array",
               of: [
                 {
-                  name: 'ingredient',
-                  title: 'Ingredient',
-                  type: 'object',
+                  name: "ingredient",
+                  title: "Ingredient",
+                  type: "object",
                   fields: [
                     {
-                      name: 'amount',
-                      title: 'Amount',
-                      type: 'ingredientAmount',
+                      name: "amount",
+                      title: "Amount",
+                      type: "ingredientAmount",
                     },
                     {
-                      name: 'ingredient',
-                      title: 'Ingredient',
-                      type: 'reference',
-                      to: [{ type: 'ingredient' }],
+                      name: "ingredient",
+                      title: "Ingredient",
+                      type: "reference",
+                      to: [{ type: "ingredient" }],
                     },
                     {
-                      name: 'note',
-                      title: 'Note',
-                      type: 'string',
+                      name: "note",
+                      title: "Note",
+                      type: "string",
                     },
                   ],
                   icon: FiDroplet,
                   preview: {
                     select: {
-                      ingredient: 'ingredient.title',
-                      amount: 'amount.value',
-                      unit: 'amount.unit',
-                      note: 'note',
+                      ingredient: "ingredient.title",
+                      amount: "amount.value",
+                      unit: "amount.unit",
+                      note: "note",
                     },
                     prepare(selection) {
-                      const { ingredient, amount, unit, note } = selection
+                      const { ingredient, amount, unit, note } = selection;
 
                       if (!amount && !unit) {
                         return {
                           title: ingredient,
-                        }
+                        };
                       }
 
                       const unitLabel =
                         amount !== 1 && units[unit]?.plural
                           ? units[unit].plural
-                          : units[unit]?.single
+                          : units[unit]?.single;
 
                       return {
                         title: ingredient,
-                        subtitle: [amount, unitLabel, note ? `– ${note}` : '']
-                          .join(' ')
+                        subtitle: [amount, unitLabel, note ? `– ${note}` : ""]
+                          .join(" ")
                           .trim(),
-                      }
+                      };
                     },
                   },
                 },
@@ -126,42 +138,42 @@ export default {
       ],
     },
     {
-      name: 'method',
-      title: 'Method',
-      type: 'array',
+      name: "method",
+      title: "Method",
+      type: "array",
       of: [
         {
-          name: 'component',
-          title: 'Component',
-          type: 'object',
+          name: "component",
+          title: "Component",
+          type: "object",
           fields: [
             {
-              name: 'title',
-              title: 'Title',
-              type: 'string',
+              name: "title",
+              title: "Title",
+              type: "string",
             },
             {
-              name: 'ingredients',
-              title: 'Ingredients',
-              type: 'ingredientPicker',
+              name: "ingredients",
+              title: "Ingredients",
+              type: "ingredientPicker",
             },
             {
-              name: 'description',
-              title: 'Description',
-              type: 'portableText',
+              name: "description",
+              title: "Description",
+              type: "portableText",
             },
           ],
           icon: FiGrid,
           preview: {
             select: {
-              description: 'description',
+              description: "description",
             },
             prepare(selection) {
-              const { description } = selection
+              const { description } = selection;
               return {
                 title: toPlainText(description),
-                subtitle: 'Component',
-              }
+                subtitle: "Component",
+              };
             },
           },
         },
@@ -170,17 +182,17 @@ export default {
   ],
   preview: {
     select: {
-      title: 'title',
-      subtitle: 'slug.current',
-      media: 'featuredImage',
+      title: "title",
+      subtitle: "slug.current",
+      media: "featuredImage",
     },
     prepare(selection) {
-      const { title, subtitle, media } = selection
+      const { title, subtitle, media } = selection;
       return {
         title,
         subtitle: `/${subtitle}`,
         media,
-      }
+      };
     },
   },
-}
+};
