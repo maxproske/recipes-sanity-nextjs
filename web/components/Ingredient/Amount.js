@@ -39,7 +39,9 @@ function Amount({ ingredient, dot }) {
   // Get all amounts and update values for serves
   const displayAmounts = amounts.map((item) => ({
     ...item, // Item base
-    value: item.value * serves, // Update value client-side for serves
+    // Update value client-side for serves. Fuzzy amounts like "to taste" have
+    // no numeric value — keep them undefined instead of producing NaN.
+    value: Number.isFinite(item.value) ? item.value * serves : undefined,
     ...units[item.unit], // Get unit title/plural
   }))
 
@@ -137,16 +139,19 @@ function Amount({ ingredient, dot }) {
         </span>
       )}
       <span className="flex-1">
-        {displayAmount.value && (
+        {(displayAmount.value ||
+          displayAmount.single ||
+          displayAmount.plural) && (
           <span className="font-mono text-xs text-caramel-700 whitespace-nowrap">
-            {displayAmount.value && !displayAmount.valueFraction ? (
-              parseFloat(displayAmount.value.toFixed())
-            ) : (
+            {displayAmount.value &&
+              !displayAmount.valueFraction &&
+              parseFloat(displayAmount.value.toFixed())}
+            {displayAmount.value && displayAmount.valueFraction && (
               <span className="transform scale-125 inline-block">
                 {displayAmount.valueFraction}
               </span>
             )}
-            {` `}
+            {displayAmount.value ? ` ` : ``}
             {displayAmount.value !== 1 && displayAmount.plural
               ? displayAmount.plural
               : displayAmount.single}
