@@ -26,7 +26,7 @@ function Banner({ children, category, description }) {
             </div>
           )}
           {description && (
-            <div className="md:text-lg md:leading-relaxed font-serif italic text-caramel-800 max-w-xl text-center">
+            <div className="md:text-lg md:leading-relaxed font-serif italic text-caramel-800 max-w-xl text-center whitespace-pre-line">
               {description}
             </div>
           )}

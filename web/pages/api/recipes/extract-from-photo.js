@@ -20,6 +20,22 @@ export const config = {
   maxDuration: 180,
 };
 
+// Find a slug not already used by another recipe, excluding this document's own
+// draft/published forms. The cookbook dataset is small, so fetching all slugs is fine.
+async function ensureUniqueSlug(client, base, selfId) {
+  const bare = String(selfId || "").replace(/^drafts\./, "");
+  const selfIds = [bare, `drafts.${bare}`];
+  const taken = await client.fetch(
+    `*[_type == "recipe" && !(_id in $selfIds)].slug.current`,
+    { selfIds },
+  );
+  const used = new Set((taken || []).filter(Boolean));
+  if (!used.has(base)) return base;
+  let n = 2;
+  while (used.has(`${base}-${n}`)) n++;
+  return `${base}-${n}`;
+}
+
 function titleCase(s) {
   return String(s || "")
     .toLowerCase()
@@ -158,6 +174,15 @@ export default async function handler(req, res) {
       categoryId: categoryMatch?._id,
       featuredImageAssetId: null,
     });
+
+    // Sanity only de-dupes slugs in the Studio's "Generate" button, not on
+    // programmatic writes — so two recipes that slugify the same would collide
+    // at /[recipe] and one would shadow the other. Append -2, -3, … on conflict.
+    draft.slug.current = await ensureUniqueSlug(
+      writeClient,
+      draft.slug.current,
+      targetDocumentId || draft._id,
+    );
 
     let resultId;
     if (targetDocumentId) {

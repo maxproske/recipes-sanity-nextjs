@@ -21,6 +21,7 @@ Preserve family names and diacritics verbatim. "Opa's Hazelnusskranz", "Tante Mi
 
 # Description
 Use the source's narrative/personal text verbatim — quotes, bake-test notes, family stories.
+Preserve paragraph/line breaks using "\n" (use "\n\n" between paragraphs) so the original structure is kept.
 If the source has NO description, return null. NEVER generate generic AI-style summaries like "A delicious traditional dessert".
 
 # Category (required)

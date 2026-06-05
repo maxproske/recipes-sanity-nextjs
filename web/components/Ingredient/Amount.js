@@ -52,6 +52,14 @@ function Amount({ ingredient, dot }) {
       amountBase.standard === 'Metric'
     ) {
       displayAmount = filterAmounts(displayAmounts, { standard })
+
+      // No stored conversion for the selected standard — e.g. an AI-imported
+      // amount that kept only its base unit, or an Imperial-only weight viewed
+      // in the default Metric mode. Fall back to the original (base) entry so
+      // the amount still renders instead of silently vanishing.
+      if (!displayAmount.value && displayAmounts.length) {
+        displayAmount = displayAmounts[0]
+      }
     } else if (
       amountBase.standard === 'Traditional' &&
       amountBase.unit === 'cup'

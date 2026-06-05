@@ -7,9 +7,15 @@ export default function IngredientPicker(props) {
   const client = useClient({ apiVersion: '2021-05-19' })
   const document = useFormValue([])
 
-  const [valueParsed, setValueParsed] = useState(
-    value ? JSON.parse(value) : {}
-  )
+  const [valueParsed, setValueParsed] = useState(() => {
+    // Guard against malformed/legacy JSON so a single bad value doesn't crash
+    // the whole method-step form (the web consumer already wraps its parse).
+    try {
+      return value ? JSON.parse(value) : {}
+    } catch {
+      return {}
+    }
+  })
 
   // Get all ingredient titles + IDs
   const [allIngredients, setAllIngredients] = useState(false)

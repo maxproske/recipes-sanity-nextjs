@@ -1,7 +1,44 @@
 import { randomUUID } from "crypto";
+import convert from "convert-units";
 import { UNITS } from "./units";
 
 const key = () => randomUUID().slice(0, 12);
+
+// Mirrors studio/src/schemas/components/convertedAmounts.js: build the cross-
+// standard conversion list the renderer filters by (web/components/Ingredient/
+// Amount.js). Without this, imported amounts stored only their base unit and
+// the Metric/Imperial toggle had nothing to switch to. Conversions only cross
+// standards (Metric <-> Imperial) of the same type; Traditional/Fuzzy units and
+// cups keep the studio's special handling.
+const DO_NOT_CONVERT = new Set(["Traditional", "Fuzzy"]);
+
+function buildConversions(value, unit) {
+  // Cups always carry volume conversions, same as the studio.
+  if (unit === "cup") {
+    return [
+      { value, unit: "cup" },
+      { value: parseInt((value * 250).toFixed()), unit: "ml" },
+      { value: parseInt((value * 8.32674).toFixed()), unit: "fl-oz" },
+    ];
+  }
+  const thisUnit = UNITS[unit];
+  const amounts = [{ value, unit }];
+  if (!thisUnit || DO_NOT_CONVERT.has(thisUnit.standard)) return amounts;
+  for (const otherKey of Object.keys(UNITS)) {
+    const other = UNITS[otherKey];
+    if (
+      !DO_NOT_CONVERT.has(other.standard) &&
+      other.standard !== thisUnit.standard &&
+      other.type === thisUnit.type
+    ) {
+      amounts.push({
+        value: parseFloat(convert(value).from(unit).to(otherKey).toFixed(2)),
+        unit: otherKey,
+      });
+    }
+  }
+  return amounts;
+}
 
 function titleCase(s) {
   return String(s || "")
@@ -35,20 +72,25 @@ function buildAmount({ value, unit }) {
   // renderer's fraction path engages (it needs a unit to look up `standard`).
   const finalUnit = unit || (snapped != null ? "quantity" : undefined);
   const meta = finalUnit && UNITS[finalUnit] ? UNITS[finalUnit] : {};
-  // Mirror what the Studio's IngredientAmount input writes: always include `amounts: []`.
-  // The renderer at web/components/Ingredient/Amount.js does `amount.amounts.map(...)`
-  // and crashes if this is undefined. Studio normally fills it with unit conversions
-  // (e.g. cup → ml → fl-oz); ours stays a single base entry until the user re-saves.
+  // `amounts` carries the cross-standard conversions the renderer filters by
+  // (web/components/Ingredient/Amount.js does `amount.amounts.map(...)`), matching
+  // what the Studio's IngredientAmount input writes (e.g. cup → ml → fl-oz). When
+  // there's a unit but no numeric value, fall back to a single base entry.
   const base = {
     ...(snapped != null ? { value: snapped } : {}),
     ...(finalUnit ? { unit: finalUnit } : {}),
   };
+  const amounts = finalUnit
+    ? snapped != null
+      ? buildConversions(snapped, finalUnit)
+      : [base]
+    : [];
   return {
     _type: "ingredientAmount",
     ...base,
     ...(meta.standard ? { standard: meta.standard } : {}),
     ...(meta.type ? { type: meta.type } : {}),
-    amounts: finalUnit ? [base] : [],
+    amounts,
   };
 }
 
