@@ -10,6 +10,8 @@ import {
   Button,
 } from "@sanity/ui";
 import { useFormValue } from "sanity";
+// CSP build avoids dynamic eval — required under the Studio's Content-Security-Policy.
+import { heicTo, isHeic } from "heic-to/csp";
 
 // Anthropic Clay (official brand color used for the Claude Spark).
 const CLAY = "#D97757";
@@ -17,6 +19,15 @@ const CLAY_DEEP = "#B85F42";
 
 const ENDPOINT = process.env.SANITY_STUDIO_EXTRACT_ENDPOINT;
 const SECRET = process.env.SANITY_STUDIO_EXTRACT_SECRET;
+
+// Vercel serverless functions reject any request body over 4.5MB at the edge
+// with FUNCTION_PAYLOAD_TOO_LARGE — before our handler runs, so no CORS headers
+// are set and the browser reports it as a CORS error. base64 inflates bytes by
+// ~33%, so a 5-6MB photo blows past the limit. Downscale client-side first:
+// OpenAI's vision model refits images to ~2048px anyway, so capping the longest
+// edge at 2048px loses no extraction quality while shrinking the payload to ~1MB.
+const MAX_EDGE = 2048;
+const JPEG_QUALITY = 0.85;
 
 // Official Claude Spark mark from Anthropic's media kit.
 function ClaudeMark({ size = 56, color = CLAY }) {
@@ -109,6 +120,47 @@ function fileToBase64(file) {
   });
 }
 
+// Decode, cap the longest edge at MAX_EDGE, and re-encode as JPEG so the upload
+// stays under Vercel's 4.5MB body limit. Honors EXIF orientation. HEIC/HEIF
+// (iPhone photos) can't be decoded by canvas in most browsers, so convert those
+// to JPEG first. Falls back to the raw bytes if decoding fails entirely.
+async function fileToUploadPayload(file) {
+  let source = file;
+  try {
+    if (await isHeic(file)) {
+      source = await heicTo({
+        blob: file,
+        type: "image/jpeg",
+        quality: JPEG_QUALITY,
+      });
+    }
+  } catch {
+    // Conversion failed — fall through and let canvas/raw fallback handle it.
+  }
+  try {
+    const bitmap = await createImageBitmap(source, {
+      imageOrientation: "from-image",
+    });
+    const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
+    const w = Math.round(bitmap.width * scale);
+    const h = Math.round(bitmap.height * scale);
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(bitmap, 0, 0, w, h);
+    bitmap.close?.();
+    const dataUrl = canvas.toDataURL("image/jpeg", JPEG_QUALITY);
+    const comma = dataUrl.indexOf(",");
+    return { imageBase64: dataUrl.slice(comma + 1), mediaType: "image/jpeg" };
+  } catch {
+    return {
+      imageBase64: await fileToBase64(source),
+      mediaType: source.type || "image/jpeg",
+    };
+  }
+}
+
 export default function AiImportField() {
   const documentId = useFormValue(["_id"]);
   const title = useFormValue(["title"]);
@@ -134,7 +186,12 @@ export default function AiImportField() {
   const handleFile = useCallback(
     async (file) => {
       if (!file || !documentId) return;
-      if (!file.type?.startsWith("image/")) {
+      // HEIC/HEIF often arrive with an empty MIME type from drag/drop, so accept
+      // by extension too — fileToUploadPayload converts them downstream.
+      const looksLikeImage =
+        file.type?.startsWith("image/") ||
+        /\.(heic|heif)$/i.test(file.name || "");
+      if (!looksLikeImage) {
         setError(`File "${file.name}" is not an image`);
         return;
       }
@@ -149,7 +206,7 @@ export default function AiImportField() {
       setWarnings([]);
       setSuccess(false);
       try {
-        const imageBase64 = await fileToBase64(file);
+        const { imageBase64, mediaType } = await fileToUploadPayload(file);
         const res = await fetch(ENDPOINT, {
           method: "POST",
           headers: {
@@ -158,7 +215,7 @@ export default function AiImportField() {
           },
           body: JSON.stringify({
             imageBase64,
-            mediaType: file.type || "image/jpeg",
+            mediaType,
             targetDocumentId: documentId,
           }),
         });
@@ -273,7 +330,7 @@ export default function AiImportField() {
     <input
       ref={fileInputRef}
       type="file"
-      accept="image/*"
+      accept="image/*,.heic,.heif"
       capture="environment"
       onChange={onPick}
       disabled={submitting}
@@ -489,7 +546,7 @@ export default function AiImportField() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/*,.heic,.heif"
           capture="environment"
           onChange={onPick}
           disabled={submitting}
