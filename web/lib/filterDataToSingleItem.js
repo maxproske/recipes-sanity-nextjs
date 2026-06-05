@@ -1,15 +1,10 @@
-export function filterDataToSingleItem(data = [], preview = false) {
+// Queries return an array; reduce it to a single document.
+// Both clients use a single perspective ('published' or 'drafts'), so there is
+// at most one document per slug — no need to disambiguate published vs draft here.
+export function filterDataToSingleItem(data = []) {
   if (!Array.isArray(data)) {
-    return data
+    return data;
   }
 
-  if (data.length === 1) {
-    return data[0]
-  }
-
-  if (preview) {
-    return data.find((item) => item._id.startsWith(`drafts.`)) || data[0]
-  }
-
-  return data[0]
+  return data[0] ?? null;
 }

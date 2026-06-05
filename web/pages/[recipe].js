@@ -1,27 +1,27 @@
-import PropTypes from 'prop-types'
-import React, { useMemo } from 'react'
-import Image from 'next/image'
-import groq from 'groq'
-import { NextSeo } from 'next-seo'
+import PropTypes from "prop-types";
+import React, { useMemo } from "react";
+import Image from "next/image";
+import groq from "groq";
+import { NextSeo } from "next-seo";
 
-import { urlFor } from '../lib/sanity'
-import { filterDataToSingleItem } from '../lib/filterDataToSingleItem'
-import { getClient } from '../lib/sanity.server'
-import { recipeQuery } from '../lib/queries'
+import { urlFor } from "../lib/sanity";
+import { filterDataToSingleItem } from "../lib/filterDataToSingleItem";
+import { getClient } from "../lib/sanity.server";
+import { recipeQuery } from "../lib/queries";
 
-import Layout from '../components/Layout'
-import Method from '../components/Method'
-import Ingredients from '../components/Ingredients'
-import ExitPreview from '../components/ExitPreview'
-import Banner from '../components/Banner'
-import Controls from '../components/Controls'
+import Layout from "../components/Layout";
+import Method from "../components/Method";
+import Ingredients from "../components/Ingredients";
+import ExitPreview from "../components/ExitPreview";
+import Banner from "../components/Banner";
+import Controls from "../components/Controls";
 
 const featuredImageSize = {
   width: 1200,
   height: 600,
-}
+};
 export default function Recipe({ data, preview }) {
-  const page = data.page
+  const page = data.page;
 
   const {
     title,
@@ -30,7 +30,7 @@ export default function Recipe({ data, preview }) {
     ingredientSets,
     method,
     category,
-  } = page ?? {}
+  } = page ?? {};
 
   const featuredImageUrl = useMemo(
     () =>
@@ -41,7 +41,7 @@ export default function Recipe({ data, preview }) {
             .url()
         : null,
     [featuredImage]
-  )
+  );
 
   return (
     <Layout>
@@ -71,22 +71,22 @@ export default function Recipe({ data, preview }) {
         </section>
       </main>
     </Layout>
-  )
+  );
 }
 
 Recipe.propTypes = {
   recipe: PropTypes.object,
-}
+};
 
 export async function getStaticProps({ params, preview = false }) {
-  const recipeParams = { slug: params.recipe }
-  const data = await getClient(preview).fetch(recipeQuery, recipeParams)
+  const recipeParams = { slug: params.recipe };
+  const data = await getClient(preview).fetch(recipeQuery, recipeParams);
 
   // Escape hatch, if our query failed to return data
-  if (!data) return { notFound: true }
+  if (!data) return { notFound: true };
 
   // Helper function to reduce all returned documents down to just one
-  const page = filterDataToSingleItem(data, preview)
+  const page = filterDataToSingleItem(data);
 
   return {
     props: {
@@ -96,18 +96,18 @@ export async function getStaticProps({ params, preview = false }) {
       },
     },
     revalidate: 60,
-  }
+  };
 }
 
 export async function getStaticPaths() {
-  const allRecipesQuery = groq`*[_type == "recipe" && defined(slug.current)][].slug.current`
-  const allRecipeSlugs = await getClient().fetch(allRecipesQuery)
+  const allRecipesQuery = groq`*[_type == "recipe" && defined(slug.current)][].slug.current`;
+  const allRecipeSlugs = await getClient().fetch(allRecipesQuery);
 
   // We'll pre-render only these paths at build time.
   // fallback blocking will server-render pages
   // on-demand if the path doesn't exist.
   return {
     paths: allRecipeSlugs.map((slug) => `/${slug}`),
-    fallback: 'blocking',
-  }
+    fallback: "blocking",
+  };
 }
