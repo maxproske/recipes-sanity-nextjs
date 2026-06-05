@@ -152,7 +152,9 @@ function Amount({ ingredient, dot }) {
               </span>
             )}
             {displayAmount.value ? ` ` : ``}
-            {displayAmount.value !== 1 && displayAmount.plural
+            {displayAmount.value &&
+            displayAmount.value !== 1 &&
+            displayAmount.plural
               ? displayAmount.plural
               : displayAmount.single}
             {` `}
