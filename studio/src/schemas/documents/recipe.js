@@ -1,6 +1,7 @@
 import { FiGrid, FiBox, FiDroplet } from "react-icons/fi";
 import { units } from "../components/amountSettings";
 import AiImportField from "../components/AiImportField.jsx";
+import HeicImageInput from "../components/HeicImageInput.jsx";
 
 function toPlainText(blocks = []) {
   return blocks
@@ -50,6 +51,9 @@ export default {
       name: "featuredImage",
       title: "Featured Image",
       type: "image",
+      components: {
+        input: HeicImageInput,
+      },
     },
     {
       name: "category",
