@@ -326,12 +326,16 @@ export default function AiImportField() {
     onMouseLeave: () => setHover(false),
   };
 
+  // No `capture` attribute: on iOS/Android it skips the chooser and opens the
+  // camera directly, so there's no way to pick an existing photo from the
+  // library. Without it, mobile shows Photo Library / Take Photo / Choose File.
+  // Rendered outside the clickable Card so the input's synthetic click doesn't
+  // bubble back into the Card's onClick.
   const fileInput = (
     <input
       ref={fileInputRef}
       type="file"
       accept="image/*,.heic,.heif"
-      capture="environment"
       onChange={onPick}
       disabled={submitting}
       style={{ display: "none" }}
@@ -389,8 +393,8 @@ export default function AiImportField() {
               </Flex>
             )}
           </Flex>
-          {fileInput}
         </Card>
+        {fileInput}
 
         {error && (
           <Card padding={3} tone="critical" border radius={2}>
@@ -508,7 +512,7 @@ export default function AiImportField() {
               >
                 <ImageIcon size={14} />
                 <Text size={1} muted>
-                  Drag or paste image here
+                  Tap to choose, or drag or paste an image
                 </Text>
               </Flex>
             )}
@@ -542,17 +546,8 @@ export default function AiImportField() {
             </Flex>
           )}
         </Flex>
-
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*,.heic,.heif"
-          capture="environment"
-          onChange={onPick}
-          disabled={submitting}
-          style={{ display: "none" }}
-        />
       </Card>
+      {fileInput}
 
       {error && (
         <Card padding={3} tone="critical" border radius={2}>
