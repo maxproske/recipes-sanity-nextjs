@@ -436,7 +436,7 @@ export default function AiImportField() {
               <Text>
                 This will replace <strong>{title}</strong> with the recipe
                 Claude generates from the uploaded photo. Ingredient amounts,
-                method, category, and description will all be overwritten.
+                method, categories, and description will all be overwritten.
               </Text>
               {pendingPreviewUrl && (
                 <Card padding={2} border radius={2}>

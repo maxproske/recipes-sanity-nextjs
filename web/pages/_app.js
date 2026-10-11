@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }) {
         }}
       />
       <section className="font-sans bg-caramel-100">
-        <GlobalHeader />
+        <GlobalHeader categories={pageProps.categories} />
         <Component {...pageProps} />
       </section>
       <footer className="font-serif italic text-caramel-500 hover:text-caramel-700 transition-colors duration-100 text-center text-sm py-12" />

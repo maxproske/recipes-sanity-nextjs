@@ -3,6 +3,14 @@ import Link from 'next/link'
 import { NextSeo } from 'next-seo'
 import Layout from '../components/Layout'
 import Heading from '../components/Heading'
+import { getClient } from '../lib/sanity.server'
+import { categoriesQuery } from '../lib/queries'
+
+// Fetched so the header's category strip renders on the 404 page too.
+export async function getStaticProps() {
+  const categories = await getClient().fetch(categoriesQuery)
+  return { props: { categories }, revalidate: 300 }
+}
 
 export default function NotFound() {
   return (

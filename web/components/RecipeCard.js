@@ -5,6 +5,7 @@ import Image from 'next/image'
 
 import Heading from './Heading'
 import { urlFor } from '../lib/sanity'
+import { categoriesLabel } from './CategoryChips'
 
 const featuredImageSize = {
   width: 600,
@@ -12,7 +13,8 @@ const featuredImageSize = {
 }
 
 function RecipeCard({ recipe }) {
-  const { title, slug, _id, featuredImage, category } = recipe
+  const { title, slug, _id, featuredImage, categories } = recipe
+  const categoryLabel = categoriesLabel(categories)
 
   const featuredImageUrl = useMemo(
     () =>
@@ -49,9 +51,9 @@ function RecipeCard({ recipe }) {
               <span className="absolute inset-0" />
           </Link>
         </Heading>
-        {category?.title && (
+        {categoryLabel && (
           <p className="font-serif italic text-caramel-500 mb-2">
-            {category.title}
+            {categoryLabel}
           </p>
         )}
       </div>
@@ -62,9 +64,11 @@ function RecipeCard({ recipe }) {
 RecipeCard.propTypes = {
   recipe: PropTypes.shape({
     _id: PropTypes.string,
-    category: PropTypes.shape({
-      title: PropTypes.string,
-    }),
+    categories: PropTypes.arrayOf(
+      PropTypes.shape({
+        title: PropTypes.string,
+      })
+    ),
     featuredImage: PropTypes.object,
     slug: PropTypes.shape({
       current: PropTypes.string,

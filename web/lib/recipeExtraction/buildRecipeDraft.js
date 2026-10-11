@@ -157,7 +157,7 @@ function nameKey(s) {
 export function buildRecipeDraft({
   extracted,
   ingredientResolutions,
-  categoryId,
+  categoryIds = [],
   featuredImageAssetId,
 }) {
   // Build ingredient sets, capturing each ingredient's _key + ref + resolved title
@@ -236,8 +236,14 @@ export function buildRecipeDraft({
           },
         }
       : {}),
-    ...(categoryId
-      ? { category: { _type: "reference", _ref: categoryId } }
+    ...(categoryIds.length
+      ? {
+          categories: categoryIds.map((id) => ({
+            _type: "reference",
+            _ref: id,
+            _key: id.replace(/[^a-zA-Z0-9]/g, "").slice(0, 12),
+          })),
+        }
       : {}),
     ingredientSets,
     method,

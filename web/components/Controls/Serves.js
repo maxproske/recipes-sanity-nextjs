@@ -15,14 +15,14 @@ function Serves() {
         serves <= 0.5 ? `opacity-25 pointer-events-none` : ``
       }`,
       icon: <MinusIcon className="w-5 h-auto" />,
-      sr: `One Less Serve`,
+      sr: `Make less`,
     },
     {
       increment: serves === 0.5 ? +0.5 : 1,
       disabled: false,
       classes: buttonClasses,
       icon: <PlusIcon className="w-5 h-auto" />,
-      sr: `One More Serve`,
+      sr: `Make more`,
     },
   ]
 
@@ -39,8 +39,11 @@ function Serves() {
             <span className="sr-only">{button.sr}</span>
           </button>
           {!index && (
-            <div className="text-caramel-900 text-center p-2 border-l border-r border-caramel-200">
-              {serves} {serves > 1 ? `Serves` : `Serve`}
+            <div
+              className="text-caramel-900 text-center p-2 border-l border-r border-caramel-200"
+              aria-live="polite"
+            >
+              {serves === 0.5 ? `½` : serves}× Recipe
             </div>
           )}
         </React.Fragment>

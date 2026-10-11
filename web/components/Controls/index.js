@@ -4,6 +4,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { useStore } from '../../hooks/useStore'
 import Toggle from './Toggle'
 import Serves from './Serves'
+import KeepAwake from './KeepAwake'
 import useBreakpoint from '../../hooks/useBreakpoint'
 
 function Controls() {
@@ -29,6 +30,7 @@ function Controls() {
     <div className="flex justify-center w-full bg-caramel-100 bg-opacity-90 border-b border-caramel-200 font-display text-2xs uppercase font-black tracking-widest sticky top-0 mb-8 py-1 z-10">
       <div className="flex items-center w-full max-w-4xl pl-2">
         <Serves />
+        <KeepAwake />
 
         <button
           type="button"

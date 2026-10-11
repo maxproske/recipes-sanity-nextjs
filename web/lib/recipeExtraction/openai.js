@@ -24,9 +24,10 @@ Use the source's narrative/personal text verbatim — quotes, bake-test notes, f
 Preserve paragraph/line breaks using "\n" (use "\n\n" between paragraphs) so the original structure is kept.
 If the source has NO description, return null. NEVER generate generic AI-style summaries like "A delicious traditional dessert".
 
-# Category (required)
-Pick the single best fit from this list — never null, never invent a new one:
+# Categories (required)
+Pick from this list only — never invent a new one:
 ${categoryTitles.map((t) => `  - ${t}`).join("\n")}
+Return the single best-fitting course/dish-type category first. If the dish clearly belongs to one of the cuisine categories in the list (e.g. Indian, German), add that as a second entry. Usually one or two entries; never more than three, never empty.
 
 # Units
 Units must be one of: ${UNIT_KEYS.join(", ")}.
@@ -142,7 +143,7 @@ function buildSchema({ categoryTitles }) {
       "notARecipeReason",
       "title",
       "description",
-      "category",
+      "categories",
       "ingredientSets",
       "method",
     ],
@@ -154,7 +155,12 @@ function buildSchema({ categoryTitles }) {
       },
       title: { type: "string" },
       description: { type: ["string", "null"] },
-      category: { type: "string", enum: categoryTitles },
+      categories: {
+        type: "array",
+        items: { type: "string", enum: categoryTitles },
+        description:
+          "Course/dish-type category first, then a cuisine category if one clearly applies.",
+      },
       ingredientSets: { type: "array", items: ingredientSet },
       method: { type: "array", items: methodGroup },
     },

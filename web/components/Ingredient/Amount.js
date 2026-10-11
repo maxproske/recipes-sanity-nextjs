@@ -174,12 +174,14 @@ function Amount({ ingredient, dot }) {
       </span>
       {hasModalContent(ingredient.ingredient) && (
         <>
+          {/* Only the icon opens the modal — the rest of the row is a
+              tap-to-tick target. */}
           <button
-            className="ml-auto opacity-10 group-hover:opacity-100 transition-opacity duration-100 pl-2"
+            className="ml-auto opacity-50 group-hover:opacity-100 transition-opacity duration-100 pl-2 pr-1 -my-1 py-1"
             type="button"
+            aria-label={`Other names for ${displayIngredient.title}`}
             onClick={() => setOpenModal(true)}
           >
-            <span className="absolute inset-0" />
             <InformationCircleIcon className="w-4 h-auto text-caramel-500" />
           </button>
           {openModal && (

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Component from './MethodStep/Component'
 import Step from './MethodStep/Step'
 import Title from './MethodStep/Title'
+import CheckableStep from './MethodStep/CheckableStep'
 import Heading from './Heading'
 
 function Method({ method, ingredientSets }) {
@@ -17,14 +18,22 @@ function Method({ method, ingredientSets }) {
       <Heading>Method</Heading>
 
       {method.map((step) => {
-        if (step._type !== 'title') methodCount += 1
+        if (step._type === 'title') {
+          return (
+            <div key={step._key}>
+              <Title step={step} />
+            </div>
+          )
+        }
+
+        methodCount += 1
 
         return (
-          <div
+          <CheckableStep
             key={step._key}
-            className={step._type !== 'title' ? `mb-8 md:mb-16` : ``}
+            stepKey={step._key}
+            className="mb-8 md:mb-16"
           >
-            {step._type === 'title' && <Title step={step} />}
             {step._type === 'component' && (
               <Component
                 allIngredients={ingredientSets}
@@ -33,7 +42,7 @@ function Method({ method, ingredientSets }) {
               />
             )}
             {step._type === 'step' && <Step count={methodCount} step={step} />}
-          </div>
+          </CheckableStep>
         )
       })}
     </>

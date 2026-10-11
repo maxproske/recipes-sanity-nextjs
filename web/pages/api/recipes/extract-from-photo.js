@@ -151,14 +151,17 @@ export default async function handler(req, res) {
       }
     }
 
-    // Category is required + comes from a fixed enum, so this should always match.
-    const categoryMatch = categoryDocs.find(
-      (c) => c.title === extracted.category,
-    );
-    if (!categoryMatch) {
-      warnings.push(
-        `Unexpected category "${extracted.category}" — leaving empty`,
-      );
+    // Categories come from a fixed enum, so these should always match.
+    const pickedCategories = [...new Set(extracted.categories || [])].slice(0, 3);
+    const categoryIds = pickedCategories
+      .map((title) => {
+        const match = categoryDocs.find((c) => c.title === title);
+        if (!match) warnings.push(`Unexpected category "${title}" — skipped`);
+        return match?._id;
+      })
+      .filter(Boolean);
+    if (categoryIds.length === 0) {
+      warnings.push("No category picked — set one in the Studio");
     }
 
     // Verify every declared ingredient is used in exactly one method step.
@@ -171,7 +174,7 @@ export default async function handler(req, res) {
     const draft = buildRecipeDraft({
       extracted,
       ingredientResolutions,
-      categoryId: categoryMatch?._id,
+      categoryIds,
       featuredImageAssetId: null,
     });
 
@@ -195,7 +198,9 @@ export default async function handler(req, res) {
       await writeClient
         .transaction()
         .createIfNotExists({ _id: targetDocumentId, _type: "recipe" })
-        .patch(targetDocumentId, (p) => p.set(fields))
+        // Drop the pre-migration single `category` so it can't shadow
+        // the new `categories` list.
+        .patch(targetDocumentId, (p) => p.set(fields).unset(["category"]))
         .commit({ autoGenerateArrayKeys: false });
       resultId = targetDocumentId;
     } else {
@@ -206,7 +211,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       draftId: resultId,
       title: draft.title,
-      category: extracted.category,
+      categories: pickedCategories,
       warnings,
     });
   } catch (err) {

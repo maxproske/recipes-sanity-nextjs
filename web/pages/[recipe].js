@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import Image from "next/image";
 import groq from "groq";
 import { NextSeo } from "next-seo";
@@ -7,7 +7,9 @@ import { NextSeo } from "next-seo";
 import { urlFor } from "../lib/sanity";
 import { filterDataToSingleItem } from "../lib/filterDataToSingleItem";
 import { getClient } from "../lib/sanity.server";
-import { recipeQuery } from "../lib/queries";
+import { categoriesQuery, recipeQuery } from "../lib/queries";
+import { useStore } from "../hooks/useStore";
+import { useChecklist } from "../hooks/useChecklist";
 
 import Layout from "../components/Layout";
 import Method from "../components/Method";
@@ -16,6 +18,7 @@ import ExitPreview from "../components/ExitPreview";
 import Banner from "../components/Banner";
 import Controls from "../components/Controls";
 import EditInStudio from "../components/EditInStudio";
+import { categoriesLabel } from "../components/CategoryChips";
 
 const featuredImageSize = {
   width: 1200,
@@ -31,8 +34,17 @@ export default function Recipe({ data, preview }) {
     description,
     ingredientSets,
     method,
-    category,
+    categories,
   } = page ?? {};
+
+  // Each recipe starts at 1× with its own saved ticks — the store is global, so
+  // without this a 2× from the last recipe would carry over.
+  const resetServes = useStore((state) => state.resetServes);
+  const loadChecklist = useChecklist((state) => state.load);
+  useEffect(() => {
+    resetServes();
+    if (_id) loadChecklist(_id);
+  }, [_id, resetServes, loadChecklist]);
 
   const featuredImageUrl = useMemo(
     () =>
@@ -51,7 +63,7 @@ export default function Recipe({ data, preview }) {
       {preview && <ExitPreview />}
       <EditInStudio documentId={_id} />
       <main>
-        <Banner description={description} category={category?.title}>
+        <Banner description={description} category={categoriesLabel(categories)}>
           {title}
         </Banner>
         <Controls />
@@ -83,17 +95,21 @@ Recipe.propTypes = {
 
 export async function getStaticProps({ params, preview = false }) {
   const recipeParams = { slug: params.recipe };
-  const data = await getClient(preview).fetch(recipeQuery, recipeParams);
-
-  // Escape hatch, if our query failed to return data
-  if (!data) return { notFound: true };
+  const [data, categories] = await Promise.all([
+    getClient(preview).fetch(recipeQuery, recipeParams),
+    getClient(preview).fetch(categoriesQuery),
+  ]);
 
   // Helper function to reduce all returned documents down to just one
   const page = filterDataToSingleItem(data);
 
+  // Unknown slugs come back as an empty array, not null — 404 on either.
+  if (!page) return { notFound: true };
+
   return {
     props: {
       preview,
+      categories,
       data: {
         page: page ?? null,
       },

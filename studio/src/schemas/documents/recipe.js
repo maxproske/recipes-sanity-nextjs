@@ -56,10 +56,14 @@ export default {
       },
     },
     {
-      name: "category",
-      title: "Category",
-      type: "reference",
-      to: [{ type: "category" }],
+      name: "categories",
+      title: "Categories",
+      description:
+        "Course first, then a cuisine if it fits — e.g. Desserts + Indian.",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "category" }] }],
+      options: { layout: "tags" },
+      validation: (Rule) => Rule.unique(),
     },
     {
       name: "ingredientSets",

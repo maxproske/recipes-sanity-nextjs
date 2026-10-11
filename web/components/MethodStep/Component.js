@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import Amount from '../Ingredient/Amount'
+import { CheckableIngredient } from '../Ingredients'
 import { PortableText } from '../../lib/sanity'
 import Count from './Count'
 
@@ -56,9 +56,10 @@ function Component({ step, count, allIngredients }) {
         )}
         <ul className="mb-2 text-sm">
           {componentIngredients.map((ingredient) => (
-            <li key={ingredient._key}>
-              <Amount ingredient={ingredient} />
-            </li>
+            <CheckableIngredient
+              key={ingredient._key}
+              ingredient={ingredient}
+            />
           ))}
         </ul>
       </div>

@@ -8,10 +8,12 @@ const temperatureOptions = [
 ]
 
 export const useStore = create((set) => ({
-  // Serves
+  // Serves — really a recipe multiplier (½×, 1×, 2×…). Recipes don't store a
+  // yield, so it scales the whole recipe rather than counting servings.
   serves: 1,
   incrementServes: (increment) =>
     set((state) => ({ serves: state.serves + increment })),
+  resetServes: () => set(() => ({ serves: 1 })),
 
   // Cups
   cup: cupOptions[0],
