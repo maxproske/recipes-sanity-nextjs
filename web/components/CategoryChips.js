@@ -7,12 +7,12 @@ import { categoryIcons } from './categoryIcons'
 // Line icon per category, keyed by title without the trailing "*" some titles
 // carry. Unknown categories fall back to a knife and fork.
 const ICON = {
-  German: 'pretzel',
+  German: 'sausage',
   Indian: 'pepper',
   'International Recipes': 'bowl-chopsticks',
   Desserts: 'cake',
   'Cookies, Bars & Muffins': 'cookie',
-  Brunch: 'egg-fried',
+  Brunch: 'croissant',
   'Meat Recipes': 'meat',
   Salads: 'salad',
   Bread: 'bread',

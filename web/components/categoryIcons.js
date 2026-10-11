@@ -2,12 +2,12 @@
 // Copyright (c) 2020-2025 Paweł Kuna. Inner SVG markup only; CategoryChips
 // wraps it in a 24x24 stroke="currentColor" <svg>.
 // Regenerate by copying from @tabler/icons/icons/outline/<name>.svg.
-// Exception: 'pretzel' is from Lucide Lab (https://github.com/lucide-icons/lucide-lab),
-// ISC License, Copyright (c) Lucide Contributors.
+// Exception: 'croissant' is from Lucide (https://lucide.dev), ISC License,
+// Copyright (c) Lucide Contributors.
 
 export const categoryIcons = {
-  pretzel:
-    '<path d="m20 19l-6.5-6.5A4.9 4.9 0 0 1 12 9a5 5 0 0 1 10 0A10 10 0 0 1 2 9a5 5 0 1 1 10 0c0 1.4-.6 2.6-1.5 3.5L4 19" />',
+  croissant:
+    '<path d="M10.2 18H4.774a1.5 1.5 0 0 1-1.352-.97a11 11 0 0 1 .132-6.487M18 10.2V4.774a1.5 1.5 0 0 0-.97-1.352a11 11 0 0 0-6.486.132" /> <path d="M18 5a4 3 0 0 1 4 3a2 2 0 0 1-2 2a10 10 0 0 0-5.139 1.42M5 18a3 4 0 0 0 3 4a2 2 0 0 0 2-2a10 10 0 0 1 1.42-5.14" /> <path d="M8.709 2.554a10 10 0 0 0-6.155 6.155a1.5 1.5 0 0 0 .676 1.626l9.807 5.42a2 2 0 0 0 2.718-2.718l-5.42-9.807a1.5 1.5 0 0 0-1.626-.676" />',
   'book-2':
     '<path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /> <path d="M19 16h-12a2 2 0 0 0 -2 2" /> <path d="M9 8h6" />',
   'bowl-chopsticks':
