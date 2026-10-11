@@ -23,6 +23,8 @@ const ICON = {
   'Seafood Recipes': 'fish',
   Appetizers: 'cheese',
   Preserves: 'bottle',
+  'Sauces & Dressings': 'ladle',
+  Holidays: 'christmas-tree',
 }
 
 // Short labels so each icon gets a one-word caption, like Bong Eats.
@@ -34,6 +36,7 @@ const LABEL = {
   'Veggie Recipes': 'Veggie',
   'Pasta & Pizza': 'Pasta & pizza',
   'Seafood Recipes': 'Seafood',
+  'Sauces & Dressings': 'Sauces',
 }
 
 // Pinned to the front of the strip, in this order; the rest follow by size.
