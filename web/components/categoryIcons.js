@@ -2,8 +2,12 @@
 // Copyright (c) 2020-2025 Paweł Kuna. Inner SVG markup only; CategoryChips
 // wraps it in a 24x24 stroke="currentColor" <svg>.
 // Regenerate by copying from @tabler/icons/icons/outline/<name>.svg.
+// Exception: 'pretzel' is from Lucide Lab (https://github.com/lucide-icons/lucide-lab),
+// ISC License, Copyright (c) Lucide Contributors.
 
 export const categoryIcons = {
+  pretzel:
+    '<path d="m20 19l-6.5-6.5A4.9 4.9 0 0 1 12 9a5 5 0 0 1 10 0A10 10 0 0 1 2 9a5 5 0 1 1 10 0c0 1.4-.6 2.6-1.5 3.5L4 19" />',
   'book-2':
     '<path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /> <path d="M19 16h-12a2 2 0 0 0 -2 2" /> <path d="M9 8h6" />',
   'bowl-chopsticks':

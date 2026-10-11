@@ -7,7 +7,7 @@ import { categoryIcons } from './categoryIcons'
 // Line icon per category, keyed by title without the trailing "*" some titles
 // carry. Unknown categories fall back to a knife and fork.
 const ICON = {
-  German: 'sausage',
+  German: 'pretzel',
   Indian: 'pepper',
   'International Recipes': 'bowl-chopsticks',
   Desserts: 'cake',
@@ -27,14 +27,14 @@ const ICON = {
   Holidays: 'christmas-tree',
 }
 
-// Short labels so each icon gets a one-word caption, like Bong Eats.
+// One-word captions so every chip fits the same fixed width.
 const LABEL = {
   'International Recipes': 'International',
-  'Cookies, Bars & Muffins': 'Cookies & bars',
+  'Cookies, Bars & Muffins': 'Cookies',
   'Meat Recipes': 'Meat',
   'Soups & Stews': 'Soups',
   'Veggie Recipes': 'Veggie',
-  'Pasta & Pizza': 'Pasta & pizza',
+  'Pasta & Pizza': 'Pasta',
   'Seafood Recipes': 'Seafood',
   'Sauces & Dressings': 'Sauces',
 }
@@ -91,12 +91,12 @@ function Chip({ href, active, icon, label, shallow }) {
       scroll={false}
       shallow={shallow}
       aria-current={active ? 'page' : undefined}
-      className="group relative shrink-0 snap-start flex flex-col items-center gap-1 px-4 pt-3 pb-3 text-caramel-900 focus:outline-none focus-visible:bg-caramel-200"
+      className="group relative shrink-0 snap-start w-20 flex flex-col items-center gap-1 px-1 pt-3 pb-3 text-caramel-900 focus:outline-none focus-visible:bg-caramel-200"
     >
       <span className="transition-transform duration-150 group-hover:-translate-y-0.5">
         <Icon name={icon} />
       </span>
-      <span className="text-[13px] leading-tight whitespace-nowrap">
+      <span className="max-w-full truncate text-[13px] leading-tight">
         {label}
       </span>
       <span
