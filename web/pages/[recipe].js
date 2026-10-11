@@ -15,6 +15,7 @@ import Ingredients from "../components/Ingredients";
 import ExitPreview from "../components/ExitPreview";
 import Banner from "../components/Banner";
 import Controls from "../components/Controls";
+import EditInStudio from "../components/EditInStudio";
 
 const featuredImageSize = {
   width: 1200,
@@ -24,6 +25,7 @@ export default function Recipe({ data, preview }) {
   const page = data.page;
 
   const {
+    _id,
     title,
     featuredImage,
     description,
@@ -47,6 +49,7 @@ export default function Recipe({ data, preview }) {
     <Layout>
       <NextSeo title={title} description={description} />
       {preview && <ExitPreview />}
+      <EditInStudio documentId={_id} />
       <main>
         <Banner description={description} category={category?.title}>
           {title}
