@@ -40,7 +40,7 @@ const LABEL = {
 }
 
 // Pinned to the front of the strip, in this order; the rest follow by size.
-const PINNED = ['German', 'Indian']
+const PINNED = ['German', 'Indian', 'Desserts', 'Meat Recipes']
 
 // A trailing "*" marks a category as approved in the Studio — editor-only, so
 // it's stripped everywhere on the site.
