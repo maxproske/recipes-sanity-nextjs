@@ -64,10 +64,19 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           CUTOFF_DATE=$(date -d '42 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          # createdAt is the tagged commit's date, so age published releases by publishedAt
           gh release list --repo ${{ github.repository }} --limit 200 \
-            --json tagName,createdAt \
-            --jq ".[] | select(.tagName | startswith(\"backup-\")) | select(.createdAt < \"$CUTOFF_DATE\") | .tagName" \
+            --json tagName,publishedAt,isDraft \
+            --jq ".[] | select(.tagName | startswith(\"backup-\")) | select(.isDraft | not) | select(.publishedAt < \"$CUTOFF_DATE\") | .tagName" \
           | while read -r tag; do
               echo "Deleting old backup: $tag"
               gh release delete "$tag" --repo ${{ github.repository }} --yes --cleanup-tag
+            done
+          # A failed release upload leaves a draft with no tag; delete it without --cleanup-tag
+          gh release list --repo ${{ github.repository }} --limit 200 \
+            --json tagName,createdAt,isDraft \
+            --jq ".[] | select(.tagName | startswith(\"backup-\")) | select(.isDraft) | select(.createdAt < \"$CUTOFF_DATE\") | .tagName" \
+          | while read -r tag; do
+              echo "Deleting stale draft: $tag"
+              gh release delete "$tag" --repo ${{ github.repository }} --yes
             done
